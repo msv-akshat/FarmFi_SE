@@ -31,9 +31,9 @@ const NavBar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+            <a href="#home" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
               Home
-            </Link>
+            </a>
             <a href="#features" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
               Features
             </a>
@@ -57,9 +57,9 @@ const NavBar = () => {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-3 border-t border-gray-200 pt-4">
-            <Link to="/" className="block text-gray-700 hover:text-teal-600 font-medium py-2">
+            <a href="#home" className="block text-gray-700 hover:text-teal-600 font-medium py-2">
               Home
-            </Link>
+            </a>
             <a href="#features" className="block text-gray-700 hover:text-teal-600 font-medium py-2">
               Features
             </a>

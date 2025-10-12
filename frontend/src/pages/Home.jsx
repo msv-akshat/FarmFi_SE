@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Database, TrendingUp, Brain, Users, CheckCircle, FileSpreadsheet, Shield, Cloud, ArrowRight, Leaf } from 'lucide-react';
 
 const Home = () => {
@@ -62,7 +63,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-green-50 to-blue-50">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section id="home" className="pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className={`text-center transform transition-all duration-1000 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
@@ -89,13 +90,13 @@ const Home = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <button className="group px-8 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2">
+              <Link to="/login" className="group px-8 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2">
                 Get Started
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-4 bg-white text-gray-700 rounded-full font-semibold text-lg hover:shadow-lg transition-all border-2 border-teal-200">
-                Watch Demo
-              </button>
+              </Link>
+              <a href="#features" className="px-8 py-4 bg-white text-gray-700 rounded-full font-semibold text-lg hover:shadow-lg transition-all border-2 border-teal-200">
+                Learn More
+              </a>
             </div>
 
             {/* Key Highlights */}
@@ -240,9 +241,9 @@ const Home = () => {
           <p className="text-xl text-gray-600 mb-8">
             Join Udhyan Setu today and experience the future of smart agriculture
           </p>
-          <button className="px-10 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+          <Link to="/login" className="inline-block px-10 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all">
             Start Your Journey
-          </button>
+          </Link>
         </div>
       </section>
     </div>
