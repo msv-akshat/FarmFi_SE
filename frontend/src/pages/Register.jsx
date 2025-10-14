@@ -170,7 +170,7 @@ const Register = () => {
                 localStorage.setItem('user', JSON.stringify(data.data.farmer));
                 localStorage.setItem('userType', 'farmer');
 
-                toast.success('Registration successful! Welcome to Udhyan Setu.');
+                toast.success('Registration successful! Welcome to FarmFi.');
                 navigate('/dashboard');
             } else {
                 throw new Error('Invalid response format from server');
@@ -195,12 +195,12 @@ const Register = () => {
                     <Link to="/" className="inline-block">
                         <img
                             src={logo}
-                            alt="Udhyan Setu"
+                            alt="FarmFi"
                             className="h-16 w-auto mx-auto mb-4 transition-transform hover:scale-105"
                         />
                     </Link>
                     <h1 className="text-3xl font-bold text-gray-800 mb-2">Farmer Registration</h1>
-                    <p className="text-gray-600">Join Udhyan Setu and start your smart farming journey</p>
+                    <p className="text-gray-600">Join FarmFi and start your smart farming journey</p>
                 </div>
 
                 {/* Registration Card */}

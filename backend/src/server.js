@@ -4,23 +4,22 @@ import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
-import sql from './config/db.js';   // ✅ FIX: import sql
+import farmerRoutes from './routes/farmerRoutes.js';
+import sql from './config/db.js';
 
-// Load environment variables
 dotenv.config();
 console.log("DATABASE_URL Loaded:", process.env.DATABASE_URL);
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/farmer', farmerRoutes);
 app.use('/api', locationRoutes);
 
-// Health-check DB route
+// Health check
 app.get("/api/db-test", async (req, res) => {
   try {
     const result = await sql`SELECT NOW()`;
@@ -31,7 +30,6 @@ app.get("/api/db-test", async (req, res) => {
   }
 });
 
-// Error Handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

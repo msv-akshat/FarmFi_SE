@@ -35,10 +35,10 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.identifier) {
-      newErrors.identifier = userType === 'farmer' 
-        ? 'Phone number is required' 
+      newErrors.identifier = userType === 'farmer'
+        ? 'Phone number is required'
         : 'Username is required';
     } else if (userType === 'farmer' && !/^[6-9]\d{9}$/.test(formData.identifier)) {
       newErrors.identifier = 'Please enter a valid 10-digit phone number';
@@ -80,8 +80,10 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.data.user));
         localStorage.setItem('userType', userType);
 
+        window.dispatchEvent(new Event('authChange'));
         toast.success('Login successful!');
         navigate('/dashboard');
+
       } else {
         throw new Error('Invalid response format from server');
       }
@@ -89,14 +91,14 @@ const Login = () => {
     } catch (error) {
       console.error('Login error:', error);
       toast.error(
-        error.message === 'Invalid credentials' 
-          ? 'Invalid phone number/username or password' 
+        error.message === 'Invalid credentials'
+          ? 'Invalid phone number/username or password'
           : 'Login failed. Please try again.'
       );
-      setErrors({ 
+      setErrors({
         general: error.message === 'Invalid credentials'
           ? 'Invalid phone number/username or password'
-          : error.message 
+          : error.message
       });
     } finally {
       setIsLoading(false);
@@ -109,14 +111,14 @@ const Login = () => {
         {/* Logo Section */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
-            <img 
-              src={logo} 
-              alt="Udhyan Setu" 
+            <img
+              src={logo}
+              alt="FarmFi"
               className="h-16 w-auto mx-auto mb-4 transition-transform hover:scale-105"
             />
           </Link>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to continue to Udhyan Setu</p>
+          <p className="text-gray-600">Sign in to continue to FarmFi</p>
         </div>
 
         {/* Login Card */}
@@ -136,11 +138,10 @@ const Login = () => {
                     setFormData(prev => ({ ...prev, identifier: '' }));
                     setErrors({});
                   }}
-                  className={`flex flex-col items-center gap-2 p-3 rounded-xl font-medium transition-all ${
-                    userType === type.id
+                  className={`flex flex-col items-center gap-2 p-3 rounded-xl font-medium transition-all ${userType === type.id
                       ? 'bg-gradient-to-br from-teal-500 to-green-600 text-white shadow-lg scale-105'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   {type.icon}
                   <span className="text-xs">{type.label}</span>
@@ -169,11 +170,10 @@ const Login = () => {
                   onChange={handleChange}
                   placeholder={userType === 'farmer' ? 'Enter your phone number' : 'Enter your username'}
                   maxLength={userType === 'farmer' ? "10" : "50"}
-                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-colors ${
-                    errors.identifier
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-colors ${errors.identifier
                       ? 'border-red-300 focus:border-red-500'
                       : 'border-gray-200 focus:border-teal-500'
-                  }`}
+                    }`}
                 />
               </div>
               {errors.identifier && (
@@ -194,11 +194,10 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-colors ${
-                    errors.password
+                  className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-colors ${errors.password
                       ? 'border-red-300 focus:border-red-500'
                       : 'border-gray-200 focus:border-teal-500'
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"
@@ -238,9 +237,8 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full py-3 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-xl font-semibold text-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 group ${
-                isLoading ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
+              className={`w-full py-3 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-xl font-semibold text-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 group ${isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
             >
               {isLoading ? (
                 <>

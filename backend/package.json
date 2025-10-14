@@ -1,7 +1,7 @@
 {
-  "name": "udhyansetu-backend",
+  "name": "farmfi-backend",
   "version": "1.0.0",
-  "description": "Backend for UdhyanSetu farmer data management platform",
+  "description": "Backend for FarmFi farmer data management platform",
   "type": "module",
   "main": "src/server.js",
   "scripts": {

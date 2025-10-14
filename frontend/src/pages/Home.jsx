@@ -71,7 +71,7 @@ const Home = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md mb-8 border border-teal-100">
               <div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-gray-700">Bridging Farmers with Smart Agriculture</span>
+              <span className="text-sm font-medium text-gray-700">The wi-fi signal your farm was missing</span>
             </div>
 
             {/* Main Heading */}
@@ -239,7 +239,7 @@ const Home = () => {
             Ready to Transform Your Farm?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Join Udhyan Setu today and experience the future of smart agriculture
+            Join FarmFi today and experience the future of smart agriculture
           </p>
           <Link to="/login" className="inline-block px-10 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all">
             Start Your Journey

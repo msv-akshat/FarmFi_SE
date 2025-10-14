@@ -1,4 +1,4 @@
--- Udhyan Setu: Initial Schema Migration
+-- FarmFi: Initial Schema Migration
 
 -- Employees table (for admins and employees)
 CREATE TABLE employees (
