@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchFarmerFields, deleteFarmerField } from '../../config/api';
 import { TrendingUp } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import BackButton from '../../components/BackButton';
 
 const FieldList = () => {
   const [fields, setFields] = useState([]);
@@ -31,7 +32,10 @@ const FieldList = () => {
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-teal-700">🌿 My Fields</h2>
+        <div className="flex items-center gap-4">
+          <BackButton to="/dashboard" />
+          <h2 className="text-2xl font-bold text-teal-700">🌿 My Fields</h2>
+        </div>
         <Link to="/my-fields/new" className="px-6 py-2 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded font-bold shadow hover:scale-105 transition">
           + Add Field
         </Link>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchSingleCrop, updateCropData, endpoints } from "../../config/api";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 
 const seasonOptions = ["Rabi", "Kharif", "Whole Year"];
 const yearOptions = [2024, 2025, 2026];
@@ -42,7 +43,7 @@ const CropEditForm = () => {
   if (crop.verified) return (
     <div className="max-w-lg mx-auto py-16 text-center">
       <div className="text-xl font-bold mb-4 text-green-700">This crop record is verified and cannot be edited.</div>
-      <button onClick={() => navigate(-1)} className="px-4 py-2 bg-teal-600 rounded text-white font-bold">← Back</button>
+      <BackButton to={`/crops/${id}`} />
     </div>
   );
 
@@ -74,7 +75,10 @@ const CropEditForm = () => {
         </div>
       )}
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-xl p-8 w-full max-w-xl flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-green-700 mb-2">Edit Crop Record</h2>
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-xl font-bold text-green-700">Edit Crop Record</h2>
+          <BackButton to={`/crops/${id}`} />
+        </div>
         {/* <label>Field</label>
         <select name="field_id" value={form.field_id} onChange={handleChange} required>
           <option value="">Pick Field</option>

@@ -7,6 +7,7 @@ import {
   endpoints
 } from "../../config/api";
 import axios from "axios";
+import BackButton from "../../components/BackButton";
 
 const FieldForm = ({ mode = "create" }) => {
   const { id } = useParams();
@@ -77,7 +78,10 @@ const FieldForm = ({ mode = "create" }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-center pt-20">
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-xl p-8 w-full max-w-xl flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-teal-700 mb-2">{mode === "edit" ? "Edit Field" : "Add New Field"}</h2>
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-xl font-bold text-teal-700">{mode === "edit" ? "Edit Field" : "Add New Field"}</h2>
+          <BackButton to={mode === "edit" && id ? `/my-fields/${id}` : "/my-fields"} />
+        </div>
         <label>Field Name</label>
         <input type="text" name="field_name" value={field.field_name} onChange={handleChange} required className="border rounded px-2 py-2" />
         <label>Area (ha)</label>

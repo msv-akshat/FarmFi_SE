@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchFarmerFields, createCropData, endpoints } from "../../config/api";
 import axios from "axios";
+import BackButton from "../../components/BackButton";
 const seasonOptions = ["Rabi", "Kharif", "Whole Year"];
 const yearOptions = [2024, 2025, 2026];
 
@@ -56,7 +57,10 @@ const CropForm = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex justify-center items-center pt-20">
             <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-xl p-8 w-full max-w-xl flex flex-col gap-4">
-                <h2 className="text-xl font-bold text-green-700 mb-2">Log Crop For Field</h2>
+                <div className="flex justify-between items-center mb-2">
+                    <h2 className="text-xl font-bold text-green-700">Log Crop For Field</h2>
+                    <BackButton to="/crops" />
+                </div>
                 <label>Field</label>
                 <select name="field_id" value={form.field_id} onChange={handleChange} required>
                     <option value="">Pick Field</option>

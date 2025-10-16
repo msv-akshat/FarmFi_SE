@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchSingleCrop, deleteCrop } from "../../config/api";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 
 const CropView = () => {
   const { id } = useParams();
@@ -66,7 +67,7 @@ const CropView = () => {
         >
           Delete
         </button>
-        <Link to="/crops" className="px-5 py-2 border border-teal-400 rounded font-semibold text-teal-800 hover:bg-teal-50 transition">← Back</Link>
+        <BackButton to="/crops" />
       </div>
     </div>
   );

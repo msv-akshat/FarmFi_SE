@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchFarmerFields, deleteFarmerField, fetchCropData, deleteCrop } from '../../config/api';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import BackButton from '../../components/BackButton';
 
 const FieldView = () => {
   const { id } = useParams();
@@ -74,7 +75,7 @@ const FieldView = () => {
             <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-bold ml-2">Draft</span>
           )}
         </h2>
-        <Link to="/my-fields" className="text-teal-700 px-4 py-1 border border-teal-400 rounded-full font-semibold hover:bg-teal-50 transition">← Back</Link>
+        <BackButton to="/my-fields" />
       </div>
       <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-2 text-lg mb-8">
         <div>Area: {field.area} ha</div>

@@ -114,7 +114,7 @@ const NavBar = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-6 py-2">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center">
+          <Link to={isLoggedIn ? "/dashboard" : "/"} className="flex items-center">
             <img
               src={logo}
               alt="FarmFi"
