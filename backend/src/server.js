@@ -3,31 +3,30 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
+import fieldRoutes from './routes/fieldRoutes.js'; // optional
+import cropRoutes from './routes/cropRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
-import farmerRoutes from './routes/farmerRoutes.js';
-import sql from './config/db.js';
+import farmerRoutes from './routes/farmerRoutes.js'; // for /me, /fields etc
+import cropCatalogRoutes from './routes/cropCatalogRoutes.js';
 
 dotenv.config();
-console.log("DATABASE_URL Loaded:", process.env.DATABASE_URL);
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
+// API routes
 app.use('/api/auth', authRoutes);
-app.use('/api/farmer', farmerRoutes);
+app.use('/api/fields', fieldRoutes);      // or everything via farmerRoutes
+app.use('/api/crops', cropRoutes);
 app.use('/api', locationRoutes);
+app.use('/api/farmer', farmerRoutes);
 
-// Health check
+console.log("Mounting cropTypes route!")
+app.use('/api/crop-types', cropCatalogRoutes);
+
 app.get("/api/db-test", async (req, res) => {
-  try {
-    const result = await sql`SELECT NOW()`;
-    res.json({ success: true, time: result[0].now });
-  } catch (err) {
-    console.error("DB TEST ERROR:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+  res.json({ success: true, time: new Date().toISOString() });
 });
 
 app.use(errorHandler);

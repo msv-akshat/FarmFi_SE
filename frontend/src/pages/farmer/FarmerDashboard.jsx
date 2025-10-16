@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Database, BarChart2, TrendingUp } from 'lucide-react';
-import { fetchFarmerProfile, fetchFarmerFields } from '../config/api';
+import { fetchFarmerProfile, fetchFarmerFields } from '../../config/api';
 
 // Import all components
-import StatCard from '../components/dashboard/StatCard';
-import ProfileSummary from '../components/dashboard/ProfileSummary';
-import FieldsQuickTable from '../components/dashboard/FieldsQuickTable';
-import QuickActions from '../components/dashboard/QuickActions';
-import InsightsWidget from '../components/dashboard/InsightsWidget';
+import StatCard from '../../components/dashboard/StatCard';
+import ProfileSummary from '../../components/dashboard/ProfileSummary';
+import FieldsQuickTable from '../../components/dashboard/FieldsQuickTable';
+import QuickActions from '../../components/dashboard/QuickActions';
+import InsightsWidget from '../../components/dashboard/InsightsWidget';
 
 const FarmerDashboard = () => {
   const [farmer, setFarmer] = useState(null);

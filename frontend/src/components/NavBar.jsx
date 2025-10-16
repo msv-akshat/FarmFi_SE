@@ -11,16 +11,12 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Listen for login status changes
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
-
     window.addEventListener('scroll', handleScroll);
 
-    // Initial check
     setIsLoggedIn(!!localStorage.getItem('token'));
 
-    // Listen to localStorage change and custom event
     const storageListener = () => setIsLoggedIn(!!localStorage.getItem('token'));
     window.addEventListener('storage', storageListener);
     window.addEventListener('authChange', storageListener);
@@ -32,14 +28,13 @@ const NavBar = () => {
     };
   }, []);
 
-  // Utility to smoothly scroll to landing section (works across routes)
   const scrollToSection = (section) => {
     if (location.pathname !== "/") {
       navigate('/');
       setTimeout(() => {
         const el = document.getElementById(section);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 250); // Wait for route transition and page paint
+      }, 250);
     } else {
       const el = document.getElementById(section);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -91,10 +86,22 @@ const NavBar = () => {
       <Link to="/dashboard" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
         Dashboard
       </Link>
+      <Link to="/my-fields" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+        My Fields
+      </Link>
+      <Link to="/crops" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+        Crops
+      </Link>
+      <Link to="/predictions" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+        Predictions
+      </Link>
+      <Link to="/disease-detection" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+        Disease
+      </Link>
       <button
         type="button"
         onClick={handleLogout}
-        className="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all"
+        className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all"
       >
         Logout
       </button>
@@ -116,7 +123,7 @@ const NavBar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {isLoggedIn ? authLinks : unauthLinks}
           </div>
 
@@ -134,43 +141,35 @@ const NavBar = () => {
           <div className="md:hidden mt-4 pb-4 space-y-3 border-t border-gray-200 pt-4">
             {isLoggedIn ? (
               <>
-                <Link to="/dashboard" className="block text-gray-700 hover:text-teal-600 font-medium py-2">
+                <Link to="/dashboard" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
                   Dashboard
+                </Link>
+                <Link to="/my-fields" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  My Fields
+                </Link>
+                <Link to="/crops" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  Crops
+                </Link>
+                <Link to="/predictions" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  Predictions
+                </Link>
+                <Link to="/disease-detection" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  Disease Detection
                 </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="block w-full px-6 py-2.5 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-center"
+                  className="block w-full px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-semibold text-center"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("home")}
-                  className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left"
-                >
-                  Home
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("features")}
-                  className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left"
-                >
-                  Features
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("about")}
-                  className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left"
-                >
-                  About
-                </button>
-                <Link to="/login" className="block w-full px-6 py-2.5 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-center">
-                  Login
-                </Link>
+                <button type="button" onClick={() => scrollToSection("home")} className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left">Home</button>
+                <button type="button" onClick={() => scrollToSection("features")} className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left">Features</button>
+                <button type="button" onClick={() => scrollToSection("about")} className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left">About</button>
+                <Link to="/login" className="block w-full px-6 py-2.5 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-center">Login</Link>
               </>
             )}
           </div>

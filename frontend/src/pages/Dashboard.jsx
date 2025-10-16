@@ -1,7 +1,7 @@
 import React from 'react';
-import FarmerDashboard from './FarmerDashboard';
-import EmployeeDashboard from './EmployeeDashboard';
-import AdminDashboard from './AdminDashboard';
+import FarmerDashboard from './farmer/FarmerDashboard';
+import EmployeeDashboard from './employee//EmployeeDashboard';
+import AdminDashboard from './admin/AdminDashboard';
 
 const Dashboard = () => {
   const userType = localStorage.getItem('userType');

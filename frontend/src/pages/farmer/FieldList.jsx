@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchFarmerFields, deleteFarmerField } from '../config/api';
+import { fetchFarmerFields, deleteFarmerField } from '../../config/api';
 import { TrendingUp } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -10,17 +10,13 @@ const FieldList = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const loadFields = async () => {
-      try {
-        const res = await fetchFarmerFields();
-        setFields(res.data.data);
-        setLoading(false);
-      } catch {
-        setError("Failed to load fields.");
-        setLoading(false);
-      }
-    };
-    loadFields();
+    fetchFarmerFields().then(res => {
+      setFields(res.data.data);
+      setLoading(false);
+    }).catch(() => {
+      setError("Failed to load fields.");
+      setLoading(false);
+    });
   }, []);
 
   const handleDelete = async (id) => {
@@ -45,17 +41,26 @@ const FieldList = () => {
           <div key={field.id} className="bg-white/80 rounded-xl shadow p-6 flex flex-col gap-2">
             <div className="flex items-center gap-2 text-green-600 font-semibold">
               <TrendingUp className="w-6 h-6" /> {field.field_name}
+              {field.verified
+                ? <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-bold ml-2">Verified</span>
+                : <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-bold ml-2">Draft</span>}
             </div>
             <div className="text-gray-600">
-              Crop: {field.crop_name || '-'}, Season: {field.season || '-'}, Area: {field.area} ha
-              <br />
-              Soil: {field.soil_type || '-'}
+              Area: {field.area} ha <br />
+              Mandal: {field.mandal_name || field.mandal_id} Village: {field.village_name || field.village_id}
             </div>
             <div className="text-gray-500 text-xs">Lat: {field.latitude}, Lng: {field.longitude} | Status: {field.status}</div>
             <div className="flex gap-3 mt-2">
               <Link to={`/my-fields/${field.id}`} className="text-teal-600 font-bold hover:underline">View</Link>
-              <Link to={`/my-fields/${field.id}/edit`} className="text-blue-600 font-bold hover:underline">Edit</Link>
-              <button className="text-red-500 font-bold hover:underline" onClick={() => handleDelete(field.id)}>Delete</button>
+              {!field.verified && (
+                <>
+                  <Link to={`/my-fields/${field.id}/edit`} className="text-blue-600 font-bold hover:underline">Edit</Link>
+                  <button className="text-red-500 font-bold hover:underline" onClick={() => handleDelete(field.id)}>Delete</button>
+                </>
+              )}
+              <Link to={`/crops/new?field_id=${field.id}`} className="text-green-600 font-bold hover:underline">
+                +Add Crop
+              </Link>
             </div>
           </div>
         ))}

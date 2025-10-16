@@ -14,3 +14,10 @@ export const protectFarmer = (req, res, next) => {
     next(new AppError('Token is not valid', 401));
   }
 };
+
+export const protectEmployee = (req, res, next) => {
+  if (!req.user || (req.user.role !== "admin" && req.user.role !== "employee")) {
+    return res.status(403).json({ success: false, message: "Forbidden" });
+  }
+  next();
+};

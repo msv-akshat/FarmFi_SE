@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Phone, Lock, Eye, EyeOff, MapPin, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
-import logo from '../assets/navlogo.png';
-import { endpoints } from '../config/api';
+import logo from '../../assets/navlogo.png';
+import { endpoints } from '../../config/api';
 
 const Register = () => {
     const navigate = useNavigate();

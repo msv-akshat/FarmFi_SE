@@ -27,17 +27,24 @@ export const updateMyProfile = async (req, res, next) => {
 
 export const getMyFields = async (req, res, next) => {
   try {
-    const fields = await sql`SELECT * FROM fields WHERE farmer_id = ${req.user.id}`;
+    const fields = await sql`
+      SELECT f.*, m.name AS mandal_name, v.name AS village_name
+      FROM fields f
+      LEFT JOIN mandals m ON f.mandal_id = m.id
+      LEFT JOIN villages v ON f.village_id = v.id
+      WHERE f.farmer_id = ${req.user.id}
+      ORDER BY f.created_at DESC
+    `;
     res.json({ success: true, data: fields });
   } catch (error) { next(error); }
 };
 
 export const createField = async (req, res, next) => {
   try {
-    const { field_name, area, latitude, longitude } = req.body;
+    const { field_name, area, latitude, longitude, mandal_id, village_id } = req.body;
     const result = await sql`
-      INSERT INTO fields (farmer_id, field_name, area, latitude, longitude, status)
-      VALUES (${req.user.id}, ${field_name}, ${area}, ${latitude}, ${longitude}, 'pending')
+      INSERT INTO fields (farmer_id, field_name, area, latitude, longitude, mandal_id, village_id, status)
+      VALUES (${req.user.id}, ${field_name}, ${area}, ${latitude}, ${longitude}, ${mandal_id}, ${village_id}, 'pending')
       RETURNING *
     `;
     res.status(201).json({ success: true, data: result[0] });

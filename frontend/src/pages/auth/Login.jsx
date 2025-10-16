@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Phone, Lock, Eye, EyeOff, ArrowRight, User, Users, Shield } from 'lucide-react';
 import { toast } from 'react-toastify';
-import logo from '../assets/navlogo.png';
+import logo from '../../assets/navlogo.png';
 
 const Login = () => {
   const navigate = useNavigate();
