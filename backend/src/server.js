@@ -8,6 +8,7 @@ import cropRoutes from './routes/cropRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
 import farmerRoutes from './routes/farmerRoutes.js'; // for /me, /fields etc
 import cropCatalogRoutes from './routes/cropCatalogRoutes.js';
+import fieldImageRoutes from './routes/fieldImageRoutes.js';
 
 dotenv.config();
 
@@ -21,6 +22,8 @@ app.use('/api/fields', fieldRoutes);      // or everything via farmerRoutes
 app.use('/api/crops', cropRoutes);
 app.use('/api', locationRoutes);
 app.use('/api/farmer', farmerRoutes);
+
+app.use('/api/images', fieldImageRoutes);
 
 console.log("Mounting cropTypes route!")
 app.use('/api/crop-types', cropCatalogRoutes);

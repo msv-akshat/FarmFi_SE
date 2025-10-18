@@ -13,6 +13,10 @@ export const endpoints = {
   crops: `${API_URL}/api/crops`,
   crop: (id) => `${API_URL}/api/crops/${id}`,
   cropsCatalog: `${API_URL}/api/crop-types`,
+    // Disease detection endpoints
+  verifiedFields: `${API_URL}/api/fields/verified`,
+  uploadImageAndPredict: `${API_URL}/api/images/upload-and-predict`,
+  predictionHistory: `${API_URL}/api/images/history`,
 };
 
 export const authHeader = () => {
@@ -48,3 +52,24 @@ export const updateCropData = (id, data) =>
 
 export const deleteCrop = (id) =>
   axios.delete(`${endpoints.crops}/${id}`, { headers: authHeader() });
+
+// Get verified fields (for dropdown)
+export const fetchVerifiedFields = async () =>
+  axios.get(endpoints.verifiedFields, { headers: authHeader() });
+
+// Upload image and get prediction
+export const uploadImageAndPredict = async (fieldId, imageFile) => {
+  const formData = new FormData();
+  formData.append('field_id', fieldId);
+  formData.append('image', imageFile);
+  return axios.post(endpoints.uploadImageAndPredict, formData, {
+    headers: {
+      ...authHeader(),
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+// Get prediction history
+export const fetchPredictionHistory = async () =>
+  axios.get(endpoints.predictionHistory, { headers: authHeader() });

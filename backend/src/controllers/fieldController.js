@@ -63,3 +63,14 @@ export const updateField = async (req, res, next) => {
         res.json({ success: true, message: 'Field updated!' });
     } catch (error) { next(error); }
 };
+
+export const getVerifiedFields = async (req, res, next) => {
+  try {
+    const fields = await sql`
+      SELECT id, field_name, area FROM fields
+      WHERE farmer_id = ${req.user.id} AND status = 'approved' AND verified = true
+      ORDER BY created_at DESC
+    `;
+    res.json(fields);
+  } catch (err) { next(err); }
+}
