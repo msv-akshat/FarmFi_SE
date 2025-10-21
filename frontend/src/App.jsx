@@ -18,6 +18,9 @@ import CropEditForm from './pages/farmer/CropEditForm';
 import Predictions from './pages/farmer/Predictions';
 import DiseaseDetection from './pages/farmer/DiseaseDetection';
 import Settings from './pages/farmer/Settings';
+import CropAnalytics from './pages/farmer/CropAnalytics';
+import FieldAreaAnalytics from './pages/farmer/FieldAreaAnalytics';
+import FieldStatusAnalytics from './pages/farmer/FieldStatusAnalytics';
 
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -60,6 +63,11 @@ function App() {
           <Route path="/predictions" element={<ProtectedRoute><Predictions /></ProtectedRoute>} />
           <Route path="/disease-detection" element={<ProtectedRoute><DiseaseDetection /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+
+          {/* Analytics pages */}
+          <Route path="/analytics/crops" element={<ProtectedRoute><CropAnalytics /></ProtectedRoute>} />
+          <Route path="/analytics/field-area" element={<ProtectedRoute><FieldAreaAnalytics /></ProtectedRoute>} />
+          <Route path="/analytics/field-status" element={<ProtectedRoute><FieldStatusAnalytics /></ProtectedRoute>} />
 
           {/* Employee/Admin dashboards */}
           <Route path="/employee/dashboard" element={<ProtectedRoute><EmployeeDashboard /></ProtectedRoute>} />

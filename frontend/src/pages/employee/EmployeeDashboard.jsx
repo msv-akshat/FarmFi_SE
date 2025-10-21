@@ -2,7 +2,6 @@ import React from 'react';
 import { Users, Upload, Table, ClipboardCheck, Filter, FileSpreadsheet, TrendingUp } from 'lucide-react';
 
 const EmployeeDashboard = () => {
-  // Replace with API/data hookup!
   const uploadsToday = 47;
   const pendingApprovals = 11;
   const rejectedRecords = 2;
@@ -10,7 +9,6 @@ const EmployeeDashboard = () => {
     { id: 1, name: "Anil Kumar", crop: "Maize", village: "Rampur", status: "pending", date: "2025-10-12" },
     { id: 2, name: "Suresh Verma", crop: "Cotton", village: "Kothapet", status: "pending", date: "2025-10-12" },
   ];
-  // Dummy employee info for profile section
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-green-50 to-blue-50">
@@ -42,12 +40,14 @@ const EmployeeDashboard = () => {
 
         {/* Upload Farmer Data */}
         <section className="mb-10">
-          <h3 className="text-xl font-bold text-gray-700 mb-4">🧾 Upload Farmer Data</h3>
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <Upload className="w-5 h-5" />
+            Upload Farmer Data
+          </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg shadow p-6">
               <div className="font-bold text-teal-700 mb-2 flex gap-2 items-center"><Upload /> Form Upload</div>
               <form className="grid gap-4">
-                {/* Basic fields; wire up to API later */}
                 <input type="text" placeholder="Farmer Name" className="border rounded-md px-3 py-2" />
                 <input type="text" placeholder="Phone" className="border rounded-md px-3 py-2" />
                 <input type="text" placeholder="Village" className="border rounded-md px-3 py-2" />
@@ -66,7 +66,10 @@ const EmployeeDashboard = () => {
 
         {/* Review Pending Data */}
         <section className="mb-10">
-          <h3 className="text-xl font-bold text-gray-700 mb-4">🔍 Review Pending Data</h3>
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <ClipboardCheck className="w-5 h-5" />
+            Review Pending Data
+          </h3>
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex flex-wrap gap-6 mb-3">
               <div className="flex items-center gap-1"><Filter /> Mandal: <select className="border rounded px-2 py-1 ml-1"><option>All</option></select></div>
@@ -105,26 +108,32 @@ const EmployeeDashboard = () => {
 
         {/* Analytics */}
         <section className="mb-10">
-          <h3 className="text-xl font-bold text-gray-700 mb-4">🧮 Analytics</h3>
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Analytics
+          </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white rounded-lg shadow p-6">
               <div className="font-bold text-green-700 mb-1">Farmers per Mandal</div>
-              <div className="h-20 flex items-center justify-center text-gray-500">[Chart]</div>
+              <div className="h-20 flex items-center justify-center text-gray-500">Chart visualization</div>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
               <div className="font-bold text-teal-700 mb-1">Total Area Uploaded</div>
-              <div className="h-20 flex items-center justify-center text-gray-500">[Chart]</div>
+              <div className="h-20 flex items-center justify-center text-gray-500">Chart visualization</div>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
               <div className="font-bold text-blue-700 mb-1">Upload Efficiency</div>
-              <div className="h-20 flex items-center justify-center text-gray-500">[Chart]</div>
+              <div className="h-20 flex items-center justify-center text-gray-500">Chart visualization</div>
             </div>
           </div>
         </section>
 
         {/* Profile & Logs */}
         <section>
-          <h3 className="text-xl font-bold text-gray-700 mb-4">👤 Profile & Logs</h3>
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <Users className="w-5 h-5" />
+            Profile & Logs
+          </h3>
           <div className="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row gap-8 items-center">
             <div className="flex flex-col gap-2">
               <div><span className="font-bold text-gray-700">Username:</span> emp001</div>

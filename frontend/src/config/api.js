@@ -39,7 +39,12 @@ export const endpoints = {
   cropDistribution: `${API_URL}/api/analytics/crop-distribution`,
   fieldSizeByCrop: `${API_URL}/api/analytics/field-size-by-crop`,
   fieldStatusBreakdown: `${API_URL}/api/analytics/status-breakdown`,
-  areaDistribution: `${API_URL}/api/analytics/area-distribution`
+  areaDistribution: `${API_URL}/api/analytics/area-distribution`,
+  
+  // Detailed analytics endpoints
+  detailedCropAnalytics: `${API_URL}/api/analytics/detailed-crop-analytics`,
+  detailedFieldAreaAnalytics: `${API_URL}/api/analytics/detailed-field-area-analytics`,
+  detailedFieldStatusAnalytics: `${API_URL}/api/analytics/detailed-field-status-analytics`
 };
 
 // Auth
@@ -81,10 +86,13 @@ export const fetchCropCatalog = async () =>
   axios.get(endpoints.cropsCatalog, { headers: authHeader() });
 
 // Images/disease detection
-export const uploadImageAndPredict = async (fieldId, imageFile) => {
+export const uploadImageAndPredict = async (fieldId, imageFile, cropId = null) => {
   const formData = new FormData();
   formData.append('field_id', fieldId);
   formData.append('image', imageFile);
+  if (cropId) {
+    formData.append('crop_id', cropId);
+  }
   return axios.post(endpoints.uploadImageAndPredict, formData, {
     headers: {
       ...authHeader(),
@@ -107,3 +115,13 @@ export const fetchFieldStatusBreakdown = async () =>
 
 export const fetchAreaDistribution = async () =>
   axios.get(endpoints.areaDistribution, { headers: authHeader() });
+
+// === Detailed Analytics API ===
+export const fetchDetailedCropAnalytics = async () =>
+  axios.get(endpoints.detailedCropAnalytics, { headers: authHeader() });
+
+export const fetchDetailedFieldAreaAnalytics = async () =>
+  axios.get(endpoints.detailedFieldAreaAnalytics, { headers: authHeader() });
+
+export const fetchDetailedFieldStatusAnalytics = async () =>
+  axios.get(endpoints.detailedFieldStatusAnalytics, { headers: authHeader() });

@@ -6,8 +6,10 @@ const BackButton = ({ label = "← Back", className = "", to = null }) => {
   
   const handleClick = () => {
     if (to) {
+      // Explicit destination provided
       navigate(to);
     } else {
+      // Browser-like back navigation - goes to previous page in history
       navigate(-1);
     }
   };

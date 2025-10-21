@@ -53,10 +53,30 @@ const FarmerDashboard = () => {
         <WelcomeCard name={farmer?.name || 'Farmer'} />
         {/* Stat Cards Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <StatCard title="My Fields" stat={fieldsCount} icon={<Database className="w-6 h-6 text-green-700" />} />
-          <StatCard title="Crop Types" stat={cropTypes} icon={<BarChart2 className="w-6 h-6 text-yellow-600" />} />
-          <StatCard title="Pending" stat={pendingFields} icon={<TrendingUp className="w-6 h-6 text-orange-600" />} />
-          <StatCard title="Approved" stat={approvedFields} icon={<TrendingUp className="w-6 h-6 text-blue-700" />} />
+          <StatCard 
+            title="My Fields" 
+            stat={fieldsCount} 
+            icon={<Database className="w-8 h-8 text-green-600" />} 
+            gradient="bg-gradient-to-br from-green-50 via-emerald-50 to-green-100"
+          />
+          <StatCard 
+            title="Crop Types" 
+            stat={cropTypes} 
+            icon={<BarChart2 className="w-8 h-8 text-amber-600" />} 
+            gradient="bg-gradient-to-br from-yellow-50 via-amber-50 to-yellow-100"
+          />
+          <StatCard 
+            title="Pending" 
+            stat={pendingFields} 
+            icon={<TrendingUp className="w-8 h-8 text-orange-600" />} 
+            gradient="bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100"
+          />
+          <StatCard 
+            title="Approved" 
+            stat={approvedFields} 
+            icon={<TrendingUp className="w-8 h-8 text-blue-600" />} 
+            gradient="bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100"
+          />
         </div>
 
         {/* Charts Row - All accurate, backend driven */}

@@ -55,42 +55,136 @@ const CropForm = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex justify-center items-center pt-20">
-            <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-xl p-8 w-full max-w-xl flex flex-col gap-4">
-                <div className="flex justify-between items-center mb-2">
-                    <h2 className="text-xl font-bold text-green-700">Log Crop For Field</h2>
-                    <BackButton to="/crops" />
+        <div className="min-h-screen pt-20 pb-10 px-4 bg-gradient-to-br from-yellow-50 via-green-50 to-teal-50">
+            <div className="max-w-2xl mx-auto">
+                <div className="bg-gradient-to-br from-white to-green-50/30 rounded-2xl shadow-2xl p-8 border border-green-200">
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-gradient-to-br from-green-500 to-teal-600 rounded-xl shadow-lg">
+                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                            <h2 className="text-3xl font-bold bg-gradient-to-r from-green-700 to-teal-600 bg-clip-text text-transparent">
+                                🌾 Log New Crop
+                            </h2>
+                        </div>
+                        <BackButton to="/crops" />
+                    </div>
+                    
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">Select Field *</label>
+                            <select 
+                                name="field_id" 
+                                value={form.field_id} 
+                                onChange={handleChange} 
+                                required
+                                className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all bg-white shadow-sm"
+                            >
+                                <option value="">Choose a field...</option>
+                                {fields.map(f => (
+                                    <option key={f.id} value={f.id}>{f.field_name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Crop Year *</label>
+                                <select 
+                                    name="crop_year" 
+                                    value={form.crop_year} 
+                                    onChange={handleChange} 
+                                    required
+                                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all bg-white shadow-sm"
+                                >
+                                    <option value="">Select year...</option>
+                                    {yearOptions.map(y => <option key={y} value={y}>{y}</option>)}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Season *</label>
+                                <select 
+                                    name="season" 
+                                    value={form.season} 
+                                    onChange={handleChange} 
+                                    required
+                                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all bg-white shadow-sm"
+                                >
+                                    <option value="">Select season...</option>
+                                    {seasonOptions.map(s => <option key={s} value={s}>{s}</option>)}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">Crop Type *</label>
+                            <select 
+                                name="crop_id" 
+                                value={form.crop_id} 
+                                onChange={handleChange} 
+                                required
+                                className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all bg-white shadow-sm"
+                            >
+                                <option value="">Select crop...</option>
+                                {(crops || []).map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                            </select>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Area (hectares) *</label>
+                                <input 
+                                    name="area" 
+                                    type="number"
+                                    step="0.01"
+                                    value={form.area} 
+                                    onChange={handleChange} 
+                                    required 
+                                    placeholder="e.g., 10.5"
+                                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all bg-white shadow-sm"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Production (tons) *</label>
+                                <input 
+                                    name="production" 
+                                    type="number"
+                                    step="0.01"
+                                    value={form.production} 
+                                    onChange={handleChange} 
+                                    required 
+                                    placeholder="e.g., 25.75"
+                                    className="w-full px-4 py-3 border-2 border-green-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all bg-white shadow-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            className="w-full py-4 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2" 
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                                    Saving...
+                                </>
+                            ) : (
+                                <>
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Log Crop Record
+                                </>
+                            )}
+                        </button>
+                    </form>
                 </div>
-                <label>Field</label>
-                <select name="field_id" value={form.field_id} onChange={handleChange} required>
-                    <option value="">Pick Field</option>
-                    {fields.map(f => (
-                        <option key={f.id} value={f.id}>{f.field_name}</option>
-                    ))}
-                </select>
-                <label>Year</label>
-                <select name="crop_year" value={form.crop_year} onChange={handleChange} required>
-                    <option value="">Select Year</option>
-                    {yearOptions.map(y => <option key={y} value={y}>{y}</option>)}
-                </select>
-                <label>Season</label>
-                <select name="season" value={form.season} onChange={handleChange} required>
-                    <option value="">Select Season</option>
-                    {seasonOptions.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
-                <label>Crop</label>
-                <select name="crop_id" value={form.crop_id} onChange={handleChange} required>
-                    <option value="">Select Crop</option>
-                    {(crops || []).map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-                <label>Area (ha)</label>
-                <input name="area" value={form.area} onChange={handleChange} required className="border rounded px-2 py-2" />
-                <label>Production (tons)</label>
-                <input name="production" value={form.production} onChange={handleChange} required className="border rounded px-2 py-2" />
-                <button type="submit" className="py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded font-bold" disabled={loading}>
-                    {loading ? "Saving..." : "Log Crop"}
-                </button>
-            </form>
+            </div>
         </div>
     );
 };

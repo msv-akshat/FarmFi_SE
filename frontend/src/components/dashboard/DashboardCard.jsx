@@ -8,7 +8,14 @@ import React from "react";
  */
 const DashboardCard = ({ children, className = "" }) => (
   <div
-    className={`bg-white rounded-2xl shadow p-5 flex flex-col justify-between h-full min-h-[330px] ${className}`}
+    className={`
+      bg-gradient-to-br from-white to-gray-50/50 
+      rounded-2xl shadow-lg hover:shadow-xl 
+      p-6 flex flex-col justify-between h-full min-h-[330px] 
+      border border-gray-100
+      transition-all duration-300 hover:scale-[1.02]
+      ${className}
+    `}
     style={{ minWidth: 0 }}
   >
     {children}

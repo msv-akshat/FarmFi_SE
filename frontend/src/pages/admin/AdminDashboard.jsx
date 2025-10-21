@@ -2,7 +2,6 @@ import React from 'react';
 import { Users, Table, CheckCircle, XCircle, ClipboardCheck, PieChart, TrendingUp, Download, Cog, FileSpreadsheet, Cloud, Shield } from 'lucide-react';
 
 const AdminDashboard = () => {
-  // Dummy data for demonstration, replace with API!
   const stats = {
     totalFarmers: 1245, approvedFarmers: 1183, pendingFarmers: 40, rejectedFarmers: 22,
     totalEmployees: 12, totalFields: 438, avgYield: 2.3
@@ -28,17 +27,20 @@ const AdminDashboard = () => {
         <section className="mb-10 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow p-6">
             <div className="font-bold text-teal-700 mb-2 flex items-center gap-2"><PieChart className="w-6 h-6" /> Crop Distribution</div>
-            <div className="bg-gradient-to-br from-green-100 to-teal-100 rounded-lg h-40 flex items-center justify-center text-gray-500">[Pie Chart Placeholder]</div>
+            <div className="bg-gradient-to-br from-green-100 to-teal-100 rounded-lg h-40 flex items-center justify-center text-gray-500">Chart visualization coming soon</div>
           </div>
           <div className="bg-white rounded-xl shadow p-6">
             <div className="font-bold text-blue-700 mb-2 flex items-center gap-2"><TrendingUp className="w-6 h-6" /> Time-series Registrations</div>
-            <div className="bg-gradient-to-br from-blue-100 to-teal-100 rounded-lg h-40 flex items-center justify-center text-gray-500">[Line Chart Placeholder]</div>
+            <div className="bg-gradient-to-br from-blue-100 to-teal-100 rounded-lg h-40 flex items-center justify-center text-gray-500">Chart visualization coming soon</div>
           </div>
         </section>
 
         {/* Farmer Verification */}
         <section className="mb-10">
-          <h3 className="text-xl font-bold text-gray-700 mb-4">✅ Farmer Verification</h3>
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <CheckCircle className="w-5 h-5" />
+            Farmer Verification
+          </h3>
           <div className="bg-white rounded-lg shadow p-6">
             <table className="w-full border rounded overflow-hidden">
               <thead>
@@ -78,25 +80,28 @@ const AdminDashboard = () => {
         <section className="mb-10 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow p-6">
             <div className="font-bold text-green-700 mb-2 flex items-center gap-2"><Cog className="w-6 h-6" /> Data Management</div>
-            <div className="bg-gray-100 rounded-lg h-24 flex items-center justify-center text-gray-500">[Farmer/Employee/Crop Edit Tables]</div>
+            <div className="bg-gray-100 rounded-lg h-24 flex items-center justify-center text-gray-500">Farmer, employee, and crop management</div>
           </div>
           <div className="bg-white rounded-xl shadow p-6">
             <div className="font-bold text-blue-700 mb-2 flex items-center gap-2"><Shield className="w-6 h-6" /> Settings</div>
-            <div className="bg-gray-100 rounded-lg h-24 flex items-center justify-center text-gray-500">[OTP/API/Role Config Form]</div>
+            <div className="bg-gray-100 rounded-lg h-24 flex items-center justify-center text-gray-500">API and role configuration</div>
           </div>
         </section>
 
         {/* Storage & Audit Log */}
         <section className="mb-10">
-          <h3 className="text-xl font-bold text-gray-700 mb-4">🗂️ Image Storage & Audit Log</h3>
+          <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+            <FileSpreadsheet className="w-5 h-5" />
+            Image Storage & Audit Log
+          </h3>
           <div className="bg-white rounded-lg shadow p-6 grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
               <div className="font-bold text-teal-700 mb-2 flex items-center gap-2"><Cloud className="w-6 h-6" /> Leaf Images</div>
-              <div className="h-24 bg-teal-50 rounded flex items-center justify-center text-gray-500">[Image Table/Search]</div>
+              <div className="h-24 bg-teal-50 rounded flex items-center justify-center text-gray-500">Image storage and search</div>
             </div>
             <div>
               <div className="font-bold text-gray-700 mb-2 flex items-center gap-2"><Table className="w-6 h-6" /> Action Logs</div>
-              <div className="h-24 bg-gray-50 rounded flex items-center justify-center text-gray-500">[Log Table/CSV Button]</div>
+              <div className="h-24 bg-gray-50 rounded flex items-center justify-center text-gray-500">Activity logs and CSV export</div>
             </div>
           </div>
         </section>
