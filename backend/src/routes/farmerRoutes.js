@@ -1,20 +1,24 @@
 import express from 'express';
 import {
   getMyProfile,
-  updateMyProfile,
+  updateMyProfile
+} from '../controllers/farmerController.js';
+import {
   getMyFields,
   createField,
   getField,
   updateField,
   deleteField
-} from '../controllers/farmerController.js';
+} from '../controllers/fieldController.js';
 import { protectFarmer } from '../middleware/auth.js';
 
 const router = express.Router();
 
+// Farmer profile routes
 router.get('/me', protectFarmer, getMyProfile);
 router.put('/me', protectFarmer, updateMyProfile);
 
+// Farmer’s field management routes
 router.get('/fields', protectFarmer, getMyFields);
 router.post('/fields', protectFarmer, createField);
 router.get('/fields/:id', protectFarmer, getField);

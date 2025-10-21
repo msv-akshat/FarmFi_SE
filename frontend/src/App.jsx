@@ -26,7 +26,7 @@ function App() {
   return (
     <Router>
       <NavBar />
-      <div className="min-h-screen pt-20">
+      <div className="min-h-screen">
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />

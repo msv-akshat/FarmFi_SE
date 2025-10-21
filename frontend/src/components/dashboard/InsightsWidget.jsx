@@ -2,16 +2,20 @@ import React from 'react';
 import { TrendingUp } from 'lucide-react';
 
 const InsightsWidget = ({ fields }) => {
-  const totalArea = fields.reduce((sum, field) => sum + (field.area || 0), 0);
-  const avgArea = fields.length ? (totalArea / fields.length).toFixed(1) : 0;
-  const mostCommonCrop = fields.length ? 
-    fields.reduce((acc, field) => {
-      acc[field.crop_name] = (acc[field.crop_name] || 0) + 1;
-      return acc;
-    }, {}) : {};
+  const totalArea = fields.reduce((sum, field) => sum + (parseFloat(field.area) || 0), 0);
+  const avgArea = fields.length > 0 ? (totalArea / fields.length).toFixed(2) : '0.00';
   
-  const topCrop = Object.keys(mostCommonCrop).length ? 
-    Object.keys(mostCommonCrop).reduce((a, b) => mostCommonCrop[a] > mostCommonCrop[b] ? a : b) : "None";
+  // Count crops from fields (filter out undefined/null crop names)
+  const cropCount = fields.reduce((acc, field) => {
+    if (field.crop_name) {
+      acc[field.crop_name] = (acc[field.crop_name] || 0) + 1;
+    }
+    return acc;
+  }, {});
+  
+  const topCrop = Object.keys(cropCount).length > 0
+    ? Object.keys(cropCount).reduce((a, b) => cropCount[a] > cropCount[b] ? a : b)
+    : "No crops yet";
 
   return (
     <section className="w-full bg-white rounded-lg shadow p-7">
@@ -22,7 +26,7 @@ const InsightsWidget = ({ fields }) => {
       <div className="space-y-4">
         <div className="flex justify-between">
           <span className="text-gray-600">Total Area:</span>
-          <span className="font-semibold">{totalArea} ha</span>
+          <span className="font-semibold">{totalArea.toFixed(2)} ha</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Average Field Size:</span>

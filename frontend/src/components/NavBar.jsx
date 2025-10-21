@@ -3,6 +3,27 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import logo from '../assets/navlogo.png';
 
+// Navbar style constants
+const navBase = 
+  "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-teal-100";
+const navBg = (isScrolled) => (
+  isScrolled
+    ? "bg-white/95 shadow-xl backdrop-blur-lg"
+    : "bg-white/80 backdrop-blur-lg"
+);
+
+// Modern font, uppercase, wide tracking on nav
+const baseBtn = 
+  "px-5 py-2 mx-1 rounded-full font-bold shadow-sm " +
+  "transition-colors duration-200 focus:outline-none font-montserrat tracking-wider uppercase text-base";
+
+const btnOutline =
+  `${baseBtn} border border-teal-400 bg-white text-teal-800 hover:bg-teal-50 hover:text-teal-900`;
+const btnGrad =
+  `${baseBtn} bg-gradient-to-r from-teal-500 to-green-600 text-white hover:from-teal-600 hover:to-green-700`;
+const btnLogout =
+  `${baseBtn} bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700`;
+
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,9 +35,7 @@ const NavBar = () => {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-
     setIsLoggedIn(!!localStorage.getItem('token'));
-
     const storageListener = () => setIsLoggedIn(!!localStorage.getItem('token'));
     window.addEventListener('storage', storageListener);
     window.addEventListener('authChange', storageListener);
@@ -54,28 +73,16 @@ const NavBar = () => {
 
   const unauthLinks = (
     <>
-      <button
-        type="button"
-        onClick={() => scrollToSection("home")}
-        className="text-gray-700 hover:text-teal-600 font-medium transition-colors bg-transparent border-0"
-      >
+      <button type="button" onClick={() => scrollToSection("home")} className={btnOutline}>
         Home
       </button>
-      <button
-        type="button"
-        onClick={() => scrollToSection("features")}
-        className="text-gray-700 hover:text-teal-600 font-medium transition-colors bg-transparent border-0"
-      >
+      <button type="button" onClick={() => scrollToSection("features")} className={btnOutline}>
         Features
       </button>
-      <button
-        type="button"
-        onClick={() => scrollToSection("about")}
-        className="text-gray-700 hover:text-teal-600 font-medium transition-colors bg-transparent border-0"
-      >
+      <button type="button" onClick={() => scrollToSection("about")} className={btnOutline}>
         About
       </button>
-      <Link to="/login" className="px-6 py-2.5 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all">
+      <Link to="/login" className={btnGrad}>
         Login
       </Link>
     </>
@@ -83,51 +90,41 @@ const NavBar = () => {
 
   const authLinks = (
     <>
-      <Link to="/dashboard" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+      <Link to="/dashboard" className={btnOutline}>
         Dashboard
       </Link>
-      <Link to="/my-fields" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+      <Link to="/my-fields" className={btnOutline}>
         My Fields
       </Link>
-      <Link to="/crops" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+      <Link to="/crops" className={btnOutline}>
         Crops
       </Link>
-      <Link to="/predictions" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+      <Link to="/predictions" className={btnOutline}>
         Predictions
       </Link>
-      <Link to="/disease-detection" className="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+      <Link to="/disease-detection" className={btnOutline}>
         Disease
       </Link>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all"
-      >
+      <button type="button" onClick={handleLogout} className={btnLogout}>
         Logout
       </button>
     </>
   );
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-gradient-to-r from-teal-50 to-green-50 shadow-lg' : 'bg-gradient-to-r from-teal-50/90 to-green-50/90 backdrop-blur-sm'
-    }`}>
+    <nav className={`${navBase} ${navBg(isScrolled)} font-montserrat`}>
       <div className="max-w-7xl mx-auto px-6 py-2">
         <div className="flex items-center justify-between">
-          <Link to={isLoggedIn ? "/dashboard" : "/"} className="flex items-center">
+          <Link to={isLoggedIn ? "/dashboard" : "/"} className="flex items-center gap-2">
             <img
               src={logo}
               alt="FarmFi"
-              className="h-24 w-auto transition-transform hover:scale-105"
+              className="h-16 w-auto transition-transform hover:scale-105 drop-shadow-lg"
             />
           </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-2">
             {isLoggedIn ? authLinks : unauthLinks}
           </div>
-
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2 text-gray-700"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -135,41 +132,40 @@ const NavBar = () => {
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-3 border-t border-gray-200 pt-4">
+          <div className="md:hidden mt-3 pb-4 space-y-2 border-t border-gray-200 pt-3 bg-white/95 rounded-b-xl shadow-lg font-montserrat">
             {isLoggedIn ? (
               <>
-                <Link to="/dashboard" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/dashboard" className={`${btnOutline} block w-full text-left mb-1`} onClick={() => setIsMobileMenuOpen(false)}>
                   Dashboard
                 </Link>
-                <Link to="/my-fields" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/my-fields" className={`${btnOutline} block w-full text-left mb-1`} onClick={() => setIsMobileMenuOpen(false)}>
                   My Fields
                 </Link>
-                <Link to="/crops" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/crops" className={`${btnOutline} block w-full text-left mb-1`} onClick={() => setIsMobileMenuOpen(false)}>
                   Crops
                 </Link>
-                <Link to="/predictions" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/predictions" className={`${btnOutline} block w-full text-left mb-1`} onClick={() => setIsMobileMenuOpen(false)}>
                   Predictions
                 </Link>
-                <Link to="/disease-detection" className="block text-gray-700 hover:text-teal-600 font-medium py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link to="/disease-detection" className={`${btnOutline} block w-full text-left mb-1`} onClick={() => setIsMobileMenuOpen(false)}>
                   Disease Detection
                 </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="block w-full px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-semibold text-center"
+                  className={`${btnLogout} block w-full text-left px-6 mt-2`}
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <button type="button" onClick={() => scrollToSection("home")} className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left">Home</button>
-                <button type="button" onClick={() => scrollToSection("features")} className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left">Features</button>
-                <button type="button" onClick={() => scrollToSection("about")} className="block text-gray-700 hover:text-teal-600 font-medium py-2 bg-transparent border-0 w-full text-left">About</button>
-                <Link to="/login" className="block w-full px-6 py-2.5 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-center">Login</Link>
+                <button type="button" onClick={() => scrollToSection("home")} className={`${btnOutline} block w-full text-left mb-1`}>Home</button>
+                <button type="button" onClick={() => scrollToSection("features")} className={`${btnOutline} block w-full text-left mb-1`}>Features</button>
+                <button type="button" onClick={() => scrollToSection("about")} className={`${btnOutline} block w-full text-left mb-1`}>About</button>
+                <Link to="/login" className={`${btnGrad} block w-full text-left mb-1`}>Login</Link>
               </>
             )}
           </div>

@@ -3,12 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
-import fieldRoutes from './routes/fieldRoutes.js'; // optional
+import fieldRoutes from './routes/fieldRoutes.js';
 import cropRoutes from './routes/cropRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
-import farmerRoutes from './routes/farmerRoutes.js'; // for /me, /fields etc
+import farmerRoutes from './routes/farmerRoutes.js';
 import cropCatalogRoutes from './routes/cropCatalogRoutes.js';
 import fieldImageRoutes from './routes/fieldImageRoutes.js';
+import analyticsRoutes from './routes/analyticsRoutes.js';
 
 dotenv.config();
 
@@ -16,17 +17,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API routes
 app.use('/api/auth', authRoutes);
-app.use('/api/fields', fieldRoutes);      // or everything via farmerRoutes
+app.use('/api/fields', fieldRoutes);
 app.use('/api/crops', cropRoutes);
 app.use('/api', locationRoutes);
 app.use('/api/farmer', farmerRoutes);
-
 app.use('/api/images', fieldImageRoutes);
-
-console.log("Mounting cropTypes route!")
 app.use('/api/crop-types', cropCatalogRoutes);
+
+app.use('/api/analytics', analyticsRoutes);
 
 app.get("/api/db-test", async (req, res) => {
   res.json({ success: true, time: new Date().toISOString() });

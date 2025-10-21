@@ -29,7 +29,7 @@ const DiseaseDetection = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50">
+    <div className="min-h-screen pt-24 bg-gradient-to-br from-orange-50 via-yellow-50 to-green-50">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">

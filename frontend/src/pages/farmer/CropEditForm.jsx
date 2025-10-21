@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchSingleCrop, updateCropData, endpoints } from "../../config/api";
+import { fetchSingleCrop, updateCropData, endpoints, authHeader } from "../../config/api";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
@@ -29,7 +29,7 @@ const CropEditForm = () => {
         production: res.data.data.production
       });
     });
-    axios.get(endpoints.cropsCatalog).then(res => setCropsCatalog(res.data.data || []));
+    axios.get(endpoints.cropsCatalog, { headers: authHeader() }).then(res => setCropsCatalog(res.data.data || []));
     // Also, load available fields if you allow moving crop to another field
     // fetchFarmerFields().then(res => setFields(res.data.data || []));
   }, [id]);

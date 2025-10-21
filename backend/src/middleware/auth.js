@@ -3,7 +3,7 @@ import { AppError } from '../utils/appError.js';
 
 export const protectFarmer = (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1];     // <--- ADD THIS
     if (!token) return next(new AppError('No token, authorization denied', 401));
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (decoded.role !== 'farmer')
@@ -11,9 +11,11 @@ export const protectFarmer = (req, res, next) => {
     req.user = { id: decoded.id, role: decoded.role };
     next();
   } catch (err) {
+    console.error("JWT error:", err);    // <--- ADD THIS
     next(new AppError('Token is not valid', 401));
   }
 };
+
 
 export const protectEmployee = (req, res, next) => {
   if (!req.user || (req.user.role !== "admin" && req.user.role !== "employee")) {

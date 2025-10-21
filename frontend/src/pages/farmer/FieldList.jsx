@@ -30,7 +30,7 @@ const FieldList = () => {
   if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
+    <div className="max-w-4xl mx-auto pt-24 px-4">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-4">
           <BackButton to="/dashboard" />

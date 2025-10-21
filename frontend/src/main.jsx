@@ -3,6 +3,12 @@ import './index.css';  // Keep this
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+  Chart as ChartJS,
+  ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend
+} from 'chart.js';
+
+ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

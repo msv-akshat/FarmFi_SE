@@ -4,7 +4,8 @@ import {
   createFarmerField,
   updateFarmerField,
   fetchFarmerFields,
-  endpoints
+  endpoints,
+  authHeader
 } from "../../config/api";
 import axios from "axios";
 import BackButton from "../../components/BackButton";
@@ -26,7 +27,7 @@ const FieldForm = ({ mode = "create" }) => {
 
   // Load mandals on mount
   useEffect(() => {
-    axios.get(endpoints.mandals).then(res => setMandals(res.data.data));
+    axios.get(endpoints.mandals, { headers: authHeader() }).then(res => setMandals(res.data.data));
   }, []);
 
   // Load field data if editing
@@ -36,7 +37,7 @@ const FieldForm = ({ mode = "create" }) => {
         const existing = res.data.data.find(f => String(f.id) === String(id));
         if (existing) setField(existing);
         if (existing?.mandal_id) {
-          axios.get(endpoints.villagesByMandal(existing.mandal_id)).then(res => setVillages(res.data.data));
+          axios.get(endpoints.villagesByMandal(existing.mandal_id), { headers: authHeader() }).then(res => setVillages(res.data.data));
         }
       });
     }
@@ -45,7 +46,7 @@ const FieldForm = ({ mode = "create" }) => {
   // When mandal changes, fetch villages
   useEffect(() => {
     if (field.mandal_id) {
-      axios.get(endpoints.villagesByMandal(field.mandal_id)).then(res => setVillages(res.data.data));
+      axios.get(endpoints.villagesByMandal(field.mandal_id), { headers: authHeader() }).then(res => setVillages(res.data.data));
     } else {
       setVillages([]);
       setField(f => ({ ...f, village_id: "" }));

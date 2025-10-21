@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchFarmerFields, createCropData, endpoints } from "../../config/api";
+import { fetchFarmerFields, createCropData, endpoints, authHeader } from "../../config/api";
 import axios from "axios";
 import BackButton from "../../components/BackButton";
 const seasonOptions = ["Rabi", "Kharif", "Whole Year"];
@@ -26,7 +26,7 @@ const CropForm = () => {
 
     useEffect(() => {
         fetchFarmerFields().then(res => setFields(res.data.data));
-        axios.get(endpoints.cropsCatalog).then(res => setCrops(res.data.data || []));
+        axios.get(endpoints.cropsCatalog, { headers: authHeader() }).then(res => setCrops(res.data.data || []));
     }, []);
 
     // If preselected field_id exists in query params, use it!

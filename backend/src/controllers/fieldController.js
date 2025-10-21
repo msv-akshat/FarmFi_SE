@@ -1,6 +1,7 @@
 import sql from '../config/db.js';
 import { AppError } from '../utils/appError.js';
 
+// Get all fields for the current farmer, with mandal/village names
 export const getMyFields = async (req, res, next) => {
     try {
         const fields = await sql`
@@ -15,42 +16,37 @@ export const getMyFields = async (req, res, next) => {
     } catch (error) { next(error); }
 };
 
+// Get a specific field for this user
+export const getField = async (req, res, next) => {
+    try {
+        const field = await sql`SELECT * FROM fields WHERE id = ${req.params.id} AND farmer_id = ${req.user.id}`;
+        if (!field.length) return next(new AppError('Field not found', 404));
+        res.json({ success: true, data: field[0] });
+    } catch (error) { next(error); }
+};
+
+// Create a new field
 export const createField = async (req, res, next) => {
     try {
         const { field_name, area, latitude, longitude, mandal_id, village_id } = req.body;
-        const result = await sql`
+        const [result] = await sql`
       INSERT INTO fields (farmer_id, field_name, area, latitude, longitude, mandal_id, village_id, status)
       VALUES (${req.user.id}, ${field_name}, ${area}, ${latitude}, ${longitude}, ${mandal_id}, ${village_id}, 'pending')
       RETURNING *
     `;
-        res.status(201).json({ success: true, data: result[0] });
+        res.status(201).json({ success: true, data: result });
     } catch (error) { next(error); }
 };
 
-export const verifyField = async (req, res, next) => {
-    try {
-        await sql`UPDATE fields SET verified = TRUE WHERE id = ${req.params.id}`;
-        res.json({ success: true, message: 'Field verified!' });
-    } catch (error) { next(error); }
-};
-
-export const deleteField = async (req, res, next) => {
-    try {
-        const [field] = await sql`SELECT verified FROM fields WHERE id = ${req.params.id} AND farmer_id = ${req.user.id}`;
-        if (!field) return next(new AppError('Field not found', 404));
-        if (field.verified) return next(new AppError('Cannot delete a verified field', 403));
-        await sql`DELETE FROM fields WHERE id = ${req.params.id}`;
-        res.json({ success: true, message: 'Deleted!' });
-    } catch (error) { next(error); }
-};
-
+// Update a field (only if not verified)
 export const updateField = async (req, res, next) => {
     try {
         const [field] = await sql`SELECT verified FROM fields WHERE id = ${req.params.id} AND farmer_id = ${req.user.id}`;
         if (!field) return next(new AppError('Field not found', 404));
-        if (field.verified) return next(new AppError('Cannot update a verified field', 403));
         const { field_name, area, latitude, longitude, mandal_id, village_id, status } = req.body;
         let updates = {};
+        if (field.verified) return next(new AppError('Cannot update a verified field', 403));
+
         if (field_name !== undefined) updates.field_name = field_name;
         if (area !== undefined) updates.area = area;
         if (latitude !== undefined) updates.latitude = latitude;
@@ -64,13 +60,38 @@ export const updateField = async (req, res, next) => {
     } catch (error) { next(error); }
 };
 
+// Delete a field (only if not verified)
+export const deleteField = async (req, res, next) => {
+    try {
+        const [field] = await sql`SELECT verified FROM fields WHERE id = ${req.params.id} AND farmer_id = ${req.user.id}`;
+        if (!field) return next(new AppError('Field not found', 404));
+        if (field.verified) return next(new AppError('Cannot delete a verified field', 403));
+        await sql`DELETE FROM fields WHERE id = ${req.params.id}`;
+        res.json({ success: true, message: 'Deleted!' });
+    } catch (error) { next(error); }
+};
+
+// Mark field as verified
+export const verifyField = async (req, res, next) => {
+    try {
+        await sql`UPDATE fields SET verified = TRUE WHERE id = ${req.params.id}`;
+        res.json({ success: true, message: 'Field verified!' });
+    } catch (error) { next(error); }
+};
+
+// Get only user's approved & verified fields (quick selector)
 export const getVerifiedFields = async (req, res, next) => {
-  try {
-    const fields = await sql`
-      SELECT id, field_name, area FROM fields
-      WHERE farmer_id = ${req.user.id} AND status = 'approved' AND verified = true
-      ORDER BY created_at DESC
-    `;
-    res.json(fields);
-  } catch (err) { next(err); }
-}
+    try {
+        if (!req.user || !req.user.id) throw new Error("NO USER FOUND");
+        const fields = await sql`
+            SELECT id, field_name, area FROM fields
+            WHERE farmer_id = ${req.user.id} AND status = 'approved' AND verified = true
+            ORDER BY created_at DESC
+        `;
+        res.json(fields);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
