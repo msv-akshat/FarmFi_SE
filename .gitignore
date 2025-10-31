@@ -142,13 +142,6 @@ pnpm-lock.yaml
 !FARMFI_COMPLETE_DOCUMENTATION.md
 
 # ========================================
-# Old/Deprecated Folders (Never commit)
-# ========================================
-/backend/
-/backend_v2/
-/frontend/
-
-# ========================================
 # Temporary Scripts (Development only)
 # ========================================
 # Scripts for schema checking and data population
