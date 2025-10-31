@@ -1,28 +1,57 @@
 import express from 'express';
+import { authenticateToken, requireFarmer } from '../middleware/auth.js';
+import multer from 'multer';
 import {
-  getMyProfile,
-  updateMyProfile
-} from '../controllers/farmerController.js';
-import {
-  getMyFields,
+  getDashboardStats,
+  getFields,
+  getFieldDetails,
   createField,
-  getField,
-  updateField,
-  deleteField
-} from '../controllers/fieldController.js';
-import { protectFarmer } from '../middleware/auth.js';
+  getCrops,
+  getCropDetails,
+  createCrop,
+  getCurrentCrops,
+  getPredictions,
+  getPredictionDetails,
+  savePrediction,
+  getCropTypes,
+  changePassword,
+  updateProfile,
+  getProfile,
+  getAnalytics
+} from '../controllers/farmerController.js';
 
 const router = express.Router();
 
-// Farmer profile routes
-router.get('/me', protectFarmer, getMyProfile);
-router.put('/me', protectFarmer, updateMyProfile);
+// All routes require farmer authentication
+router.use(authenticateToken, requireFarmer);
 
-// Farmer’s field management routes
-router.get('/fields', protectFarmer, getMyFields);
-router.post('/fields', protectFarmer, createField);
-router.get('/fields/:id', protectFarmer, getField);
-router.put('/fields/:id', protectFarmer, updateField);
-router.delete('/fields/:id', protectFarmer, deleteField);
+// Dashboard
+router.get('/dashboard/stats', getDashboardStats);
+router.get('/dashboard/analytics', getAnalytics);
+
+// Fields
+router.get('/fields', getFields);
+router.post('/fields', createField);
+router.get('/fields/:id', getFieldDetails);
+router.get('/fields/:field_id/current-crops', getCurrentCrops);
+
+// Crops
+router.get('/crops', getCrops);
+router.post('/crops', createCrop);
+router.get('/crops/:id', getCropDetails);
+
+// Disease Predictions
+router.get('/predictions', getPredictions);
+const upload = multer({ storage: multer.memoryStorage() });
+router.post('/predictions', upload.single('image'), savePrediction);
+router.get('/predictions/:id', getPredictionDetails);
+
+// Utilities
+router.get('/crop-types', getCropTypes);
+
+// Profile & Settings
+router.get('/profile', getProfile);
+router.patch('/profile', updateProfile);
+router.post('/change-password', changePassword);
 
 export default router;

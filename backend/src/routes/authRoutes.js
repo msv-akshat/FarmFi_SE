@@ -1,8 +1,15 @@
 import express from 'express';
-import { register, login } from '../controllers/authController.js';
+import { registerFarmer, login, getLocations, changePassword } from '../controllers/authController.js';
+import { authenticateToken } from '../middleware/auth.js';
+
 const router = express.Router();
 
-router.post('/register', register);
+// Public routes
+router.post('/register', registerFarmer);
 router.post('/login', login);
+router.get('/locations', getLocations);
+
+// Protected routes
+router.post('/change-password', authenticateToken, changePassword);
 
 export default router;

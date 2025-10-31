@@ -1,120 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Database, TrendingUp, Brain, Users, CheckCircle, FileSpreadsheet, Shield, Cloud, ArrowRight, Leaf } from 'lucide-react';
+import { Link } from 'react-router-dom'
+import { BarChart3, ShieldCheck, Users, ArrowRight, Leaf, TrendingUp, Bell } from 'lucide-react'
+import navLogo from '../assets/navlogo.png'
+import heroImage from '../assets/farmfi-hero.png.jpg'
 
-const Home = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  const features = [
-    {
-      icon: <Database className="w-8 h-8" />,
-      title: "Smart Data Management",
-      description: "Centralized farmer data with validation workflows. Register via forms or bulk Excel uploads with admin approval system."
-    },
-    {
-      icon: <Brain className="w-8 h-8" />,
-      title: "AI Disease Detection",
-      description: "Upload plant leaf images for instant disease identification and get AI-powered recommendations for treatment."
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Crop Yield Analytics",
-      description: "Predictive insights on crop yields based on historical data, regional patterns, and real-time monitoring."
-    },
-    {
-      icon: <FileSpreadsheet className="w-8 h-8" />,
-      title: "Advanced Reporting",
-      description: "Download detailed reports filtered by mandal, village, and crop type. Track cultivation areas and farmer counts."
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Validation Workflow",
-      description: "Multi-level approval system ensures data accuracy. Admins review and approve all farmer registrations."
-    },
-    {
-      icon: <Cloud className="w-8 h-8" />,
-      title: "Cloud-Native Platform",
-      description: "Built on modern cloud infrastructure with Supabase/PostgreSQL for scalable, reliable data storage."
-    }
-  ];
-
-  const userRoles = [
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "Farmers",
-      points: ["Easy registration process", "Upload crop images for disease detection", "Track cultivation data", "Access personalized insights"]
-    },
-    {
-      icon: <FileSpreadsheet className="w-6 h-6" />,
-      title: "Employees",
-      points: ["Bulk data uploads via Excel", "Assist farmers with registration", "Generate custom reports", "Support data collection"]
-    },
-    {
-      icon: <Shield className="w-6 h-6" />,
-      title: "Administrators",
-      points: ["Validate farmer records", "Approve/reject entries", "Centralized dashboard access", "Oversee all workflows"]
-    }
-  ];
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-green-50 to-blue-50">
-      {/* Hero Section */}
-      <section id="home" className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className={`text-center transform transition-all duration-1000 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md mb-8 border border-teal-100">
-              <div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-gray-700">The wi-fi signal your farm was missing</span>
+    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white">
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <img src={navLogo} alt="FarmFi Logo" className="h-10 w-auto" />
             </div>
-
-            {/* Main Heading */}
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-teal-600 via-green-600 to-teal-700 bg-clip-text text-transparent">
-                Empowering Farmers
-              </span>
-              <br />
-              <span className="text-gray-800">with AI & Analytics</span>
-            </h1>
-
-            {/* Subheading */}
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-              A cloud-native platform for farmer data management, crop yield analysis, and AI-powered disease detection. Helping farmers and administrators make smarter decisions for healthier harvests.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <Link to="/login" className="group px-8 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2">
-                Get Started
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <div className="flex items-center space-x-4">
+              <Link to="/admin/login" className="text-gray-500 hover:text-purple-600 font-medium transition-colors text-sm">
+                Admin
               </Link>
-              <a href="#features" className="px-8 py-4 bg-white text-gray-700 rounded-full font-semibold text-lg hover:shadow-lg transition-all border-2 border-teal-200">
-                Learn More
-              </a>
+              <Link to="/login" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
+                Login
+              </Link>
+              <Link to="/register" className="btn-primary">
+                Register
+              </Link>
             </div>
+          </div>
+        </div>
+      </nav>
 
-            {/* Key Highlights */}
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-teal-100">
-                <CheckCircle className="w-8 h-8 text-teal-600 mx-auto mb-3" />
-                <h3 className="font-bold text-gray-800 mb-2">Data Validation</h3>
-                <p className="text-sm text-gray-600">Multi-level approval workflow</p>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+                Smart Farming for a
+                <span className="text-primary-600"> Better Tomorrow</span>
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                Empower your farm with AI-powered disease detection, real-time analytics, and comprehensive field management. Join thousands of farmers growing smarter.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/register" className="btn-primary inline-flex items-center justify-center">
+                  Register as farmer
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+                <Link to="/login" className="btn-secondary inline-flex items-center justify-center">
+                  Sign In
+                </Link>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-green-100">
-                <Brain className="w-8 h-8 text-green-600 mx-auto mb-3" />
-                <h3 className="font-bold text-gray-800 mb-2">AI Detection</h3>
-                <p className="text-sm text-gray-600">Smart disease identification</p>
+              
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-6 pt-8">
+                <div>
+                  <div className="text-3xl font-bold text-primary-600">1000+</div>
+                  <div className="text-gray-600">Farmers</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-primary-600">5000+</div>
+                  <div className="text-gray-600">Fields</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-primary-600">99%</div>
+                  <div className="text-gray-600">Accuracy</div>
+                </div>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-100">
-                <TrendingUp className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                <h3 className="font-bold text-gray-800 mb-2">Yield Forecasting</h3>
-                <p className="text-sm text-gray-600">Predictive crop analytics</p>
+            </div>
+            
+            {/* Hero Image */}
+            <div className="relative">
+              <div className="rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src={heroImage} 
+                  alt="FarmFi Smart Farming" 
+                  className="w-full h-auto object-cover"
+                />
               </div>
             </div>
           </div>
@@ -122,132 +82,199 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6 bg-white/50" id="features">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Comprehensive Features
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Everything You Need to Manage Your Farm
             </h2>
-            <p className="text-xl text-gray-600">
-              Everything you need for modern agricultural data management
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Comprehensive tools designed specifically for modern farmers
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <div className="text-white">
-                    {feature.icon}
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
+            {/* Feature 1 */}
+            <div className="card group hover:shadow-xl transition-shadow duration-300">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+                <ShieldCheck className="w-7 h-7 text-primary-600" />
               </div>
-            ))}
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">AI Disease Detection</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Upload crop images and get instant disease diagnosis with 99% accuracy. Our AI analyzes thousands of patterns to protect your harvest.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="card group hover:shadow-xl transition-shadow duration-300">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+                <Leaf className="w-7 h-7 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Field Management</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Organize multiple fields, track crop seasons (Rabi, Kharif, Whole Year), and monitor growth cycles with precision.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="card group hover:shadow-xl transition-shadow duration-300">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+                <BarChart3 className="w-7 h-7 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Advanced Analytics</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Get detailed insights on field performance, crop health trends, and prediction history with beautiful visualizations.
+              </p>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="card group hover:shadow-xl transition-shadow duration-300">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+                <Users className="w-7 h-7 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Verification System</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Fields and crops are verified by agricultural employees and approved by admins ensuring data accuracy and government compliance.
+              </p>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="card group hover:shadow-xl transition-shadow duration-300">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+                <TrendingUp className="w-7 h-7 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Smart Predictions</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Access complete prediction history with filtering by severity, crop type, and time period for better decision making.
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="card group hover:shadow-xl transition-shadow duration-300">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+                <Bell className="w-7 h-7 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Season Management</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Intelligent season tracking prevents crop conflicts - manage Rabi, Kharif, and whole-year crops without overlaps.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* User Roles Section */}
-      <section className="py-20 px-6" id="about">
-        <div className="max-w-7xl mx-auto">
+      {/* How It Works */}
+      <section className="py-24 bg-gradient-to-b from-primary-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Built for Everyone
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Get Started in Minutes
             </h2>
-            <p className="text-xl text-gray-600">
-              Role-based access for farmers, employees, and administrators
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Simple steps to transform your farming experience
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {userRoles.map((role, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg border-2 border-teal-100 hover:border-teal-300 transition-all"
-              >
-                <div className="w-14 h-14 bg-gradient-to-br from-teal-400 to-green-500 rounded-xl flex items-center justify-center mb-6">
-                  <div className="text-white">
-                    {role.icon}
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  {role.title}
-                </h3>
-                <ul className="space-y-3">
-                  {role.points.map((point, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-600">{point}</span>
-                    </li>
-                  ))}
-                </ul>
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                1
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Register</h3>
+              <p className="text-gray-600">Sign up with your phone number and location details</p>
+            </div>
 
-      {/* Stats Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-teal-600 to-green-600 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <Leaf className="absolute top-10 left-10 w-32 h-32 transform rotate-12" />
-          <Leaf className="absolute bottom-10 right-10 w-40 h-40 transform -rotate-12" />
-        </div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Making an Impact
-            </h2>
-            <p className="text-xl text-teal-50">
-              Connecting farms with the future
-            </p>
-          </div>
-          <div className="grid md:grid-cols-4 gap-8 text-center text-white">
-            <div>
-              <div className="text-5xl font-bold mb-2">Cloud-Native</div>
-              <div className="text-xl opacity-90">Scalable Infrastructure</div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                2
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Add Fields</h3>
+              <p className="text-gray-600">Register your fields with location and size information</p>
             </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">AI-Powered</div>
-              <div className="text-xl opacity-90">Disease Detection</div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                3
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Plant Crops</h3>
+              <p className="text-gray-600">Add crops with season details and track growth</p>
             </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">Real-Time</div>
-              <div className="text-xl opacity-90">Data Analytics</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">Multi-Level</div>
-              <div className="text-xl opacity-90">Data Validation</div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                4
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Monitor Health</h3>
+              <p className="text-gray-600">Upload images for AI disease detection and analytics</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-            Ready to Transform Your Farm?
+      <section className="py-24 bg-primary-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to Transform Your Farming?
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Join FarmFi today and experience the future of smart agriculture
+          <p className="text-xl text-primary-100 mb-8">
+            Join thousands of farmers who are already using FarmFi to increase their yields and protect their crops
           </p>
-          <Link to="/login" className="inline-block px-10 py-4 bg-gradient-to-r from-teal-500 to-green-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all">
-            Start Your Journey
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/register" className="bg-white text-primary-600 hover:bg-primary-50 font-semibold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center justify-center">
+              Create Free Account
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
+            <Link to="/login" className="bg-primary-700 text-white hover:bg-primary-800 font-semibold py-4 px-8 rounded-lg border-2 border-white transition-all duration-200 inline-flex items-center justify-center">
+              Sign In Now
+            </Link>
+          </div>
         </div>
       </section>
-    </div>
-  );
-};
 
-export default Home;
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-300 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center mb-4">
+                <img src={navLogo} alt="FarmFi Logo" className="h-8 w-auto brightness-0 invert" />
+              </div>
+              <p className="text-sm">Smart farming solutions powered by AI technology.</p>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-primary-400 transition-colors">Features</a></li>
+                <li><a href="#" className="hover:text-primary-400 transition-colors">How it Works</a></li>
+                <li><a href="#" className="hover:text-primary-400 transition-colors">Pricing</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-primary-400 transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-primary-400 transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-primary-400 transition-colors">FAQs</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-primary-400 transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-primary-400 transition-colors">Terms of Service</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+            <p>&copy; 2024 FarmFi. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}

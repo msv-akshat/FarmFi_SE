@@ -1,39 +1,48 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
-import fieldRoutes from './routes/fieldRoutes.js';
-import cropRoutes from './routes/cropRoutes.js';
-import locationRoutes from './routes/locationRoutes.js';
 import farmerRoutes from './routes/farmerRoutes.js';
-import cropCatalogRoutes from './routes/cropCatalogRoutes.js';
-import fieldImageRoutes from './routes/fieldImageRoutes.js';
-import analyticsRoutes from './routes/analyticsRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/fields', fieldRoutes);
-app.use('/api/crops', cropRoutes);
-app.use('/api', locationRoutes);
 app.use('/api/farmer', farmerRoutes);
-app.use('/api/images', fieldImageRoutes);
-app.use('/api/crop-types', cropCatalogRoutes);
+app.use('/api/employee', employeeRoutes);
+app.use('/api/admin', adminRoutes);
 
-app.use('/api/analytics', analyticsRoutes);
-
-app.get("/api/db-test", async (req, res) => {
-  res.json({ success: true, time: new Date().toISOString() });
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ success: true, message: 'FarmFi Clean Backend is running!' });
 });
 
-app.use(errorHandler);
+// Error handling
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ 
+    success: false, 
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
 
-const PORT = process.env.PORT || 5000;
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`\n🚀 FarmFi Clean Backend Server`);
+  console.log(`📡 Running on: http://localhost:${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`✅ Health check: http://localhost:${PORT}/health\n`);
 });
+
+export default app;

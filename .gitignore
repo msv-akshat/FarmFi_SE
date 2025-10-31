@@ -1,45 +1,184 @@
-# Node.js dependencies
-/backend/node_modules/
-/frontend/node_modules/
-
-# Environment variables
-/backend/.env
-/frontend/.env
-
-# Build outputs
-/dist
-/.next
-/out
-/build
-
-# Log files
-*.log
+# ========================================
+# Node.js Dependencies
+# ========================================
+node_modules/
+/backend_clean/node_modules/
+/frontend_clean/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# Editor directories and files
-.vscode/
+# ========================================
+# Environment Variables & Secrets
+# ========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+.env*
+!.env.example
+
+# ========================================
+# Build Outputs
+# ========================================
+dist/
+dist-ssr/
+build/
+out/
+.next/
+*.local
+.turbo/
+.parcel-cache/
+
+# ========================================
+# Editor & IDE
+# ========================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+.vs/
 
-# System files
+# ========================================
+# Operating System Files
+# ========================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
 
-# Database
-/db/*.sqlite
-/db/*.db
-/db/*.log
+# ========================================
+# Database Files
+# ========================================
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
 
+# ========================================
+# Log Files
+# ========================================
+*.log
+logs/
+*.log.*
+combined.log
+error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========================================
+# Testing & Coverage
+# ========================================
+coverage/
+*.coverage
+.nyc_output/
+.cache/
+test-results/
+playwright-report/
+.jest/
+
+# ========================================
+# Temporary Files
+# ========================================
+*.tmp
+*.temp
+.tmp/
+.temp/
+*.bak
+*.swp
+*.swo
+
+# ========================================
+# Package Manager Lock Files
+# ========================================
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.yarn/
+.pnp.*
+
+# ========================================
 # Miscellaneous
+# ========================================
 *.tgz
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.eslintcache
+.stylelintcache
+*.gz
+*.zip
+*.tar
+*.rar
+
+# ========================================
+# Documentation (Keep only main docs)
+# ========================================
+# Keep only essential documentation
+!README.md
+!FARMFI_COMPLETE_DOCUMENTATION.md
+
+# ========================================
+# Old/Deprecated Folders (Never commit)
+# ========================================
+/backend/
+/backend_v2/
+/frontend/
+
+# ========================================
+# Temporary Scripts (Development only)
+# ========================================
+# Scripts for schema checking and data population
+check_*.js
+add_*.js
+create_*.js
+update_*.js
+reset_*.js
+fix_*.js
+populate_*.js
+test_*.js
+*_sample_*.js
+*_temp*.js
+
+# ========================================
+# Production/Deployment
+# ========================================
+.vercel
+.netlify
+.firebase/
+.amplify/
+
+# ========================================
+# Other
+# ========================================
+*.seed
+*.pid
+*.pid.lock
+.npm
+.eslintcache
+.node_repl_history
+*.tsbuildinfo
+.yarn-integrity

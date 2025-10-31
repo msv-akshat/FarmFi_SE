@@ -1,25 +1,44 @@
 import jwt from 'jsonwebtoken';
-import { AppError } from '../utils/appError.js';
 
-export const protectFarmer = (req, res, next) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1];     // <--- ADD THIS
-    if (!token) return next(new AppError('No token, authorization denied', 401));
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.role !== 'farmer')
-      return next(new AppError('Not authorized as farmer', 403));
-    req.user = { id: decoded.id, role: decoded.role };
-    next();
-  } catch (err) {
-    console.error("JWT error:", err);    // <--- ADD THIS
-    next(new AppError('Token is not valid', 401));
+const JWT_SECRET = process.env.JWT_SECRET || 'farmfi-secret-2025';
+
+export const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Access token required' });
   }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: 'Invalid or expired token' });
+    }
+    req.user = user;
+    next();
+  });
 };
 
-
-export const protectEmployee = (req, res, next) => {
-  if (!req.user || (req.user.role !== "admin" && req.user.role !== "employee")) {
-    return res.status(403).json({ success: false, message: "Forbidden" });
+export const requireFarmer = (req, res, next) => {
+  if (req.user.role !== 'farmer') {
+    return res.status(403).json({ success: false, message: 'Farmer access required' });
   }
   next();
 };
+
+export const requireEmployee = (req, res, next) => {
+  if (req.user.role !== 'employee') {
+    return res.status(403).json({ success: false, message: 'Employee access required' });
+  }
+  next();
+};
+
+export const requireAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Admin access required' });
+  }
+  next();
+};
+
+// Combined middleware for admin routes
+export const adminAuth = [authenticateToken, requireAdmin];
