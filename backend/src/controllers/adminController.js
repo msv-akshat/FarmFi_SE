@@ -73,7 +73,7 @@ export const getDashboardStats = async (req, res) => {
         COUNT(DISTINCT c.id) as total_crops,
         COUNT(DISTINCT c.id) FILTER (WHERE c.status = 'admin_approved') as approved_crops,
         COUNT(DISTINCT c.id) FILTER (WHERE c.status = 'employee_verified') as pending_crop_approval,
-        COUNT(DISTINCT dp.id) as total_disease_predictions,
+        COUNT(DISTINCT dp.id) FILTER (WHERE LOWER(dp.predicted_disease) != 'healthy') as total_disease_predictions,
         COALESCE(SUM(DISTINCT fi.area::numeric) FILTER (WHERE fi.status = 'admin_approved'), 0) as total_area
       FROM farmers f
       FULL OUTER JOIN employees e ON true
@@ -96,7 +96,7 @@ export const getDashboardStats = async (req, res) => {
         COUNT(DISTINCT CASE WHEN DATE(f.created_at) = d.date THEN f.id END) as new_farmers,
         COUNT(DISTINCT CASE WHEN DATE(fi.created_at) = d.date THEN fi.id END) as new_fields,
         COUNT(DISTINCT CASE WHEN DATE(c.created_at) = d.date THEN c.id END) as new_crops,
-        COUNT(DISTINCT CASE WHEN DATE(dp.created_at) = d.date THEN dp.id END) as new_predictions
+        COUNT(DISTINCT CASE WHEN DATE(dp.created_at) = d.date AND LOWER(dp.predicted_disease) != 'healthy' THEN dp.id END) as new_predictions
       FROM dates d
       LEFT JOIN farmers f ON DATE(f.created_at) = d.date AND f.role = 'farmer'
       LEFT JOIN fields fi ON DATE(fi.created_at) = d.date
@@ -109,9 +109,9 @@ export const getDashboardStats = async (req, res) => {
     // Disease severity breakdown
     const diseaseStats = await sql`
       SELECT 
-        COUNT(*) FILTER (WHERE severity = 'high') as high,
-        COUNT(*) FILTER (WHERE severity = 'medium') as medium,
-        COUNT(*) FILTER (WHERE severity = 'low') as low
+        COUNT(*) FILTER (WHERE severity = 'high' AND LOWER(predicted_disease) != 'healthy') as high,
+        COUNT(*) FILTER (WHERE severity = 'medium' AND LOWER(predicted_disease) != 'healthy') as medium,
+        COUNT(*) FILTER (WHERE severity = 'low' AND LOWER(predicted_disease) != 'healthy') as low
       FROM disease_predictions
     `;
 
@@ -859,31 +859,31 @@ export const getFieldsAnalytics = async (req, res) => {
     // Status distribution
     const statusDistribution = await sql`
       SELECT 
-        status,
-        COUNT(*) as count,
+        status as name,
+        COUNT(*)::int as count,
         COALESCE(SUM(area::numeric), 0) as total_area
       FROM fields
       GROUP BY status
     `;
 
     // Fields by mandal
-    const byMandal = await sql`
+    const mandalDistribution = await sql`
       SELECT 
-        m.mandal_name,
-        COUNT(fi.id) as field_count,
+        m.mandal_name as mandal,
+        COUNT(fi.id)::int as count,
         COALESCE(SUM(fi.area::numeric), 0) as total_area
       FROM mandals m
       LEFT JOIN fields fi ON fi.mandal_id = m.id
       GROUP BY m.mandal_name
-      ORDER BY field_count DESC
+      ORDER BY count DESC
       LIMIT 10
     `;
 
     // Soil type distribution
-    const soilTypes = await sql`
+    const soilDistribution = await sql`
       SELECT 
         soil_type,
-        COUNT(*) as count
+        COUNT(*)::int as count
       FROM fields
       WHERE soil_type IS NOT NULL
       GROUP BY soil_type
@@ -894,7 +894,7 @@ export const getFieldsAnalytics = async (req, res) => {
     const monthlyTrend = await sql`
       SELECT 
         TO_CHAR(created_at, 'Mon YYYY') as month,
-        COUNT(*) as count
+        COUNT(*)::int as count
       FROM fields
       WHERE created_at >= NOW() - INTERVAL '12 months'
       GROUP BY TO_CHAR(created_at, 'Mon YYYY'), DATE_TRUNC('month', created_at)
@@ -905,8 +905,8 @@ export const getFieldsAnalytics = async (req, res) => {
       success: true,
       data: {
         status_distribution: statusDistribution,
-        by_mandal: byMandal,
-        soil_types: soilTypes,
+        mandal_distribution: mandalDistribution,
+        soil_distribution: soilDistribution,
         monthly_trend: monthlyTrend
       }
     });
@@ -922,10 +922,11 @@ export const getCropsAnalytics = async (req, res) => {
     const cropDistribution = await sql`
       SELECT 
         ct.crop_name,
-        COUNT(c.id) as count,
+        COUNT(c.id)::int as count,
         COALESCE(SUM(c.area::numeric), 0) as total_area
       FROM crop_types ct
       LEFT JOIN crop_data c ON c.crop_type_id = ct.id
+      WHERE c.id IS NOT NULL
       GROUP BY ct.crop_name
       ORDER BY count DESC
       LIMIT 15
@@ -934,8 +935,8 @@ export const getCropsAnalytics = async (req, res) => {
     // Season distribution
     const seasonDistribution = await sql`
       SELECT 
-        season,
-        COUNT(*) as count,
+        season as name,
+        COUNT(*)::int as count,
         COALESCE(SUM(area::numeric), 0) as total_area
       FROM crop_data
       GROUP BY season
@@ -944,20 +945,20 @@ export const getCropsAnalytics = async (req, res) => {
     // Status distribution
     const statusDistribution = await sql`
       SELECT 
-        status,
-        COUNT(*) as count
+        status as name,
+        COUNT(*)::int as count
       FROM crop_data
       GROUP BY status
     `;
 
     // Year-wise trend
-    const yearlyTrend = await sql`
+    const yearlyTrends = await sql`
       SELECT 
-        crop_year,
-        COUNT(*) as count
+        crop_year as year,
+        COUNT(*)::int as count
       FROM crop_data
       GROUP BY crop_year
-      ORDER BY crop_year DESC
+      ORDER BY crop_year ASC
       LIMIT 5
     `;
 
@@ -967,7 +968,7 @@ export const getCropsAnalytics = async (req, res) => {
         crop_distribution: cropDistribution,
         season_distribution: seasonDistribution,
         status_distribution: statusDistribution,
-        yearly_trend: yearlyTrend
+        yearly_trends: yearlyTrends
       }
     });
   } catch (error) {
@@ -978,60 +979,69 @@ export const getCropsAnalytics = async (req, res) => {
 
 export const getDiseaseAnalytics = async (req, res) => {
   try {
-    // Disease distribution
+    // Disease distribution (exclude "Healthy" or "healthy")
     const diseaseDistribution = await sql`
       SELECT 
-        predicted_disease,
-        COUNT(*) as count,
+        predicted_disease as disease_name,
+        COUNT(*)::int as count,
         AVG(confidence::numeric) as avg_confidence
       FROM disease_predictions
+      WHERE LOWER(predicted_disease) != 'healthy'
       GROUP BY predicted_disease
       ORDER BY count DESC
       LIMIT 15
     `;
 
-    // Severity distribution
+    // Severity distribution (exclude healthy predictions)
     const severityDistribution = await sql`
       SELECT 
-        severity,
-        COUNT(*) as count
+        INITCAP(severity) as name,
+        COUNT(*)::int as count
       FROM disease_predictions
+      WHERE LOWER(predicted_disease) != 'healthy'
       GROUP BY severity
+      ORDER BY 
+        CASE severity
+          WHEN 'high' THEN 1
+          WHEN 'medium' THEN 2
+          WHEN 'low' THEN 3
+        END
     `;
 
     // Disease trends (last 6 months)
-    const monthlyTrend = await sql`
+    const monthlyTrends = await sql`
       SELECT 
         TO_CHAR(created_at, 'Mon YYYY') as month,
-        COUNT(*) as total_predictions,
-        COUNT(*) FILTER (WHERE severity = 'high') as high_severity,
-        COUNT(*) FILTER (WHERE severity = 'medium') as medium_severity,
-        COUNT(*) FILTER (WHERE severity = 'low') as low_severity
+        COUNT(*)::int as count,
+        COUNT(*) FILTER (WHERE severity = 'high' AND LOWER(predicted_disease) != 'healthy')::int as high_severity,
+        COUNT(*) FILTER (WHERE severity = 'medium' AND LOWER(predicted_disease) != 'healthy')::int as medium_severity,
+        COUNT(*) FILTER (WHERE severity = 'low' AND LOWER(predicted_disease) != 'healthy')::int as low_severity
       FROM disease_predictions
       WHERE created_at >= NOW() - INTERVAL '6 months'
+        AND LOWER(predicted_disease) != 'healthy'
       GROUP BY TO_CHAR(created_at, 'Mon YYYY'), DATE_TRUNC('month', created_at)
       ORDER BY DATE_TRUNC('month', created_at) ASC
     `;
 
-    // Crop-wise disease frequency
+    // Crop-wise disease frequency (exclude healthy)
     const cropWiseDisease = await sql`
       SELECT 
         c.crop_name,
-        COUNT(dp.id) as prediction_count,
-        COUNT(*) FILTER (WHERE dp.severity = 'high') as high_severity_count
+        COUNT(dp.id)::int as prediction_count,
+        COUNT(*) FILTER (WHERE dp.severity = 'high')::int as high_severity_count
       FROM crop_data c
-      LEFT JOIN disease_predictions dp ON dp.crop_id = c.id
+      LEFT JOIN disease_predictions dp ON dp.crop_id = c.id AND LOWER(dp.predicted_disease) != 'healthy'
       WHERE dp.id IS NOT NULL
       GROUP BY c.crop_name
       ORDER BY prediction_count DESC
       LIMIT 10
     `;
 
-    // Recent high-severity predictions
-    const recentHighSeverity = await sql`
+    // Recent high-severity predictions (exclude healthy)
+    const highSeverityAlerts = await sql`
       SELECT 
         dp.id,
-        dp.predicted_disease,
+        dp.predicted_disease as disease_name,
         dp.confidence,
         dp.severity,
         dp.created_at,
@@ -1042,7 +1052,7 @@ export const getDiseaseAnalytics = async (req, res) => {
       LEFT JOIN farmers f ON dp.farmer_id = f.id
       LEFT JOIN fields fi ON dp.field_id = fi.id
       LEFT JOIN crop_data c ON dp.crop_id = c.id
-      WHERE dp.severity = 'high'
+      WHERE dp.severity = 'high' AND LOWER(dp.predicted_disease) != 'healthy'
       ORDER BY dp.created_at DESC
       LIMIT 10
     `;
@@ -1052,9 +1062,9 @@ export const getDiseaseAnalytics = async (req, res) => {
       data: {
         disease_distribution: diseaseDistribution,
         severity_distribution: severityDistribution,
-        monthly_trend: monthlyTrend,
+        monthly_trends: monthlyTrends,
         crop_wise_disease: cropWiseDisease,
-        recent_high_severity: recentHighSeverity
+        high_severity_alerts: highSeverityAlerts
       }
     });
   } catch (error) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../components/NavBar';
+import S3Image from '../components/S3Image';
 import { getAuthHeader } from '../utils/auth';
 
 export default function CropView(){
@@ -116,12 +117,13 @@ export default function CropView(){
                     
                     {p.image_url && (
                       <div className="ml-4 flex-shrink-0">
-                        <img 
-                          src={p.image_url} 
+                        <S3Image 
+                          s3Key={p.image_url} 
                           alt="Crop disease" 
                           className="w-32 h-32 rounded-lg object-cover border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow"
                           onClick={() => window.open(p.image_url, '_blank')}
                           title="Click to view full size"
+                          useProxy={true}
                         />
                       </div>
                     )}

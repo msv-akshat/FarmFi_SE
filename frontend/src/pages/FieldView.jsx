@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../components/NavBar';
+import S3Image from '../components/S3Image';
 import { getAuthHeader } from '../utils/auth';
 import { MapPin, Wheat, Activity } from 'lucide-react';
 
@@ -130,12 +131,13 @@ export default function FieldView(){
               {predictions.map(p => (
                 <div key={p.id} className="flex items-start space-x-4 p-3 border border-gray-200 rounded-lg">
                   {p.image_url && (
-                    <img 
-                      src={p.image_url} 
+                    <S3Image 
+                      s3Key={p.image_url} 
                       alt="Disease detection" 
                       className="w-20 h-20 rounded-lg object-cover border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow flex-shrink-0"
                       onClick={() => window.open(p.image_url, '_blank')}
                       title="Click to view full size"
+                      useProxy={true}
                     />
                   )}
                   <div className="flex-1 min-w-0">

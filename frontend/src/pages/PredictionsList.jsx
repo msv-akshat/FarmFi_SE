@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { History, Filter, Search, AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react';
 import NavBar from '../components/NavBar';
+import S3Image from '../components/S3Image';
 import { getAuthHeader } from '../utils/auth';
 
 export default function PredictionsList() {
@@ -144,10 +145,11 @@ export default function PredictionsList() {
                     )}
                   </div>
                   {prediction.image_url && (
-                    <img 
-                      src={prediction.image_url} 
-                      alt="Crop" 
+                    <S3Image 
+                      s3Key={prediction.image_url} 
+                      alt="Crop disease" 
                       className="w-24 h-24 rounded-lg object-cover ml-4"
+                      useProxy={true}
                     />
                   )}
                 </div>

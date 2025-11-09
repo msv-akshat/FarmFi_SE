@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import farmerRoutes from './routes/farmerRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import s3Routes from './routes/s3Routes.js';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/farmer', farmerRoutes);
 app.use('/api/employee', employeeRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/s3', s3Routes);
 
 // Health check
 app.get('/health', (req, res) => {

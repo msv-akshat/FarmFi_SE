@@ -13,7 +13,7 @@ export const getDashboardStats = async (req, res) => {
         COUNT(DISTINCT c.id) FILTER (WHERE c.status = 'admin_approved') as approved_crops,
         COUNT(DISTINCT c.id) as total_crops,
         COALESCE(SUM(DISTINCT f.area::numeric) FILTER (WHERE f.status = 'admin_approved'), 0) as total_area,
-        COUNT(DISTINCT dp.id) as total_predictions
+        COUNT(DISTINCT dp.id) FILTER (WHERE LOWER(dp.predicted_disease) != 'healthy') as total_predictions
       FROM farmers farmer
       LEFT JOIN fields f ON f.farmer_id = farmer.id
       LEFT JOIN crop_data c ON c.farmer_id = farmer.id
@@ -956,9 +956,9 @@ export const getAnalytics = async (req, res) => {
     // Severity breakdown
     const severityData = await sql`
       SELECT 
-        COUNT(*) FILTER (WHERE severity = 'high') as high,
-        COUNT(*) FILTER (WHERE severity = 'medium') as medium,
-        COUNT(*) FILTER (WHERE severity = 'low') as low
+        COUNT(*) FILTER (WHERE severity = 'high' AND LOWER(predicted_disease) != 'healthy') as high,
+        COUNT(*) FILTER (WHERE severity = 'medium' AND LOWER(predicted_disease) != 'healthy') as medium,
+        COUNT(*) FILTER (WHERE severity = 'low' AND LOWER(predicted_disease) != 'healthy') as low
       FROM disease_predictions
       WHERE farmer_id = ${farmerId}
     `;
@@ -994,6 +994,7 @@ export const getAnalytics = async (req, res) => {
       FROM disease_predictions
       WHERE farmer_id = ${farmerId}
         AND created_at >= NOW() - INTERVAL '30 days'
+        AND LOWER(predicted_disease) != 'healthy'
       GROUP BY DATE(created_at)
       ORDER BY date ASC
     `;

@@ -338,10 +338,10 @@ export default function CropDetails() {
                           <div className="flex-1 bg-gray-200 rounded-full h-2 mr-2">
                             <div 
                               className="bg-blue-600 h-2 rounded-full" 
-                              style={{ width: `${pred.confidence}%` }}
+                              style={{ width: `${(pred.confidence * 100)}%` }}
                             ></div>
                           </div>
-                          <span className="text-sm font-bold text-blue-600">{pred.confidence}%</span>
+                          <span className="text-sm font-bold text-blue-600">{(pred.confidence * 100).toFixed(1)}%</span>
                         </div>
                       </div>
                       
